@@ -53,6 +53,8 @@ else
       bash /tmp/rancher/rancher-save-images.sh --image-list /tmp/rancher/offline.txt --images /tmp/rancher/rancher-images.tar.gz
 fi
 
+echo '{ "log-opts": { "max-size": "10m", "max-file": "2" }, "insecure-registries" : ["'$BASTION_HOST':5000"] }' > /tmp/daemon.json
+
 if test -z "$upload_to_bastion"
 then
       echo "SKIP Upload to bastion"
@@ -98,6 +100,17 @@ else
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/docker/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/docker|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
+      echo "scp /tmp/daemon.json to bastion"
+      temp_file=$(mktemp)
+      echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/daemon.json/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/daemon.json|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo "move $BASTION_DIR/daemon.json to /etc/docker/daemon.json on bastion"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S mv $BASTION_DIR/daemon.json /etc/docker/daemon.json" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo ""
 fi
 
 if test -z "$provision_bastion"
@@ -105,7 +118,7 @@ then
       echo "SKIP Provision bastion"
 else
       echo "Provision bastion"
-      echo "install docker on bastion"      
+      echo "install docker on bastion"
       temp_file=$(mktemp)
       echo "$BASTION_SSH_RUN sudo -S bash $BASTION_DIR/docker/install.sh -f $BASTION_DIR/docker/docker-$DOCKER_VERSION.tgz" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
@@ -116,4 +129,17 @@ else
       echo "$BASTION_SSH_RUN sudo -S docker load --input $BASTION_DIR/registry2.tar" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
+      echo ""
+      echo "Run registry on bastion"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S docker run -d -p 5000:5000 --restart=always --name registry -v /var/lib/registry:/var/lib/registry registry:2" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo ""
+      echo "load offline images to registry on bastion"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S bash $BASTION_DIR/rancher-load-images.sh --images $BASTION_DIR/rancher-images.tar.gz --image-list $BASTION_DIR/rancher-images.txt  --image-list $BASTION_DIR/rancher-images.txt --registry $BASTION_HOST:5000" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo ""
 fi
