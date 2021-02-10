@@ -9,9 +9,7 @@ sh /get_helm.sh
 echo bastion-static >> /tmp/rancher/rancher-images.txt
 
 echo "add rke and huperkube versions"
-docker pull rancher/rke-tools:$RKE_TOOLS_VERSION
 echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/rancher-images.txt
-docker pull rancher/hyperkube:$HUPERKUBE_VERSION
 echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/rancher-images.txt
 
 echo "remove dublicate from rancher-images.txt"
@@ -22,3 +20,4 @@ sh /get_docker.sh
 docker build -t bastion-static -f /Dockerfile.bastion /tmp/docker
 
 cat /tmp/rancher/rancher-images.txt
+#bash /tmp/rancher/rancher-save-images.sh --image-list /tmp/rancher/rancher-images.txt --images /tmp/rancher/rancher-images.tar.gz
