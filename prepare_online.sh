@@ -55,8 +55,12 @@ then
       echo "SKIP Upload to bastion"
 else
       echo "Upload to bastion"
-      # scp /tmp/registry2.tar to bastion
-      # scp /tmp/rancher/offline-images.txt to bastion
-      # scp /tmp/rancher/rancher-images.tar.gz to bastion
-      # scp /tmp/helm/*.tgz to bastion /charts/
+      echo "scp /tmp/registry2.tar to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/registry2.tar/g"`
+      echo "scp /tmp/rancher/offline-images.txt to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/offline-images.txt/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/offline-images.txt/g"`
+      echo "scp /tmp/rancher/rancher-images.tar.gz to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.tar.gz/g"`
+      echo "scp /tmp/helm/ to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/helm/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/charts/g"`
 fi

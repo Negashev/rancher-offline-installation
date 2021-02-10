@@ -12,7 +12,9 @@ ENV DOCKER_VERSION=19.03.9 \
     RKE_TOOLS_VERSION=v0.1.69 \
     HUPERKUBE_VERSION=v1.19.7-rancher1 \ 
     CHARTMUSEAM_VERSION=v0.12.0 \ 
-    HOST_MOUNT=/tmp
+    HOST_MOUNT=/tmp \ 
+    BASTION_SCP='scp -r {source} user@10.10.10.10:{destination}' \
+    BASTION_DIR=\/var\/offline
 
 ADD get_docker.sh /get_docker.sh
 ADD get_helm.sh /get_helm.sh
