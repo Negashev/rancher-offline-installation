@@ -13,7 +13,10 @@ ENV DOCKER_VERSION=19.03.9 \
     HUPERKUBE_VERSION=v1.19.7-rancher1 \ 
     CHARTMUSEAM_VERSION=v0.12.0 \ 
     HOST_MOUNT=/tmp \ 
-    BASTION_SCP='scp -r {source} user@10.10.10.10:{destination}' \
+    BASTION_HOST=0.0.0.0 \
+    BASTION_USER=user \
+    BASTION_SCP='sshpass -p "passw0rd" scp -r {source} {user}@{host}:{destination}' \
+    BASTION_SSH_RUN='sshpass -p "passw0rd" ssh {user}@{host}' \
     BASTION_DIR=\/var\/offline
 
 ADD get_docker.sh /get_docker.sh

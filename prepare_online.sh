@@ -1,5 +1,5 @@
 #!/bin/sh
-apk add --update bash grep
+apk add --update bash grep sshpass
 
 while getopts ":ib" opt; do
   case ${opt} in
@@ -7,10 +7,13 @@ while getopts ":ib" opt; do
       ;;
     b ) upload_to_bastion=true
       ;;
+    p ) provision_bastion=true
+      ;;
     \? )
       echo "Usage:"
       echo "    -i Skip creating tar.gz from offline-images.txt"
-      echo "    -b Upload data to bastion server by \$SCP_TO_BASTION"
+      echo "    -b Upload data to bastion server by \$BASTION_SCP"
+      echo "    -p Start instalation on bastion \$BASTION_HOST"
       exit 0
       ;;
   esac
@@ -56,11 +59,24 @@ then
 else
       echo "Upload to bastion"
       echo "scp /tmp/registry2.tar to bastion"
-      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/registry2.tar/g"`
-      echo "scp /tmp/rancher/offline-images.txt to bastion"
-      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/offline-images.txt/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/offline-images.txt/g"`
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/registry2.tar/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      echo "scp /tmp/rancher/offline.txt to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/offline.txt/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.txt/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
       echo "scp /tmp/rancher/rancher-images.tar.gz to bastion"
-      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.tar.gz/g"`
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.tar.gz/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      echo "scp /tmp/rancher/rancher-load-images.sh to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-load-images.sh/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-load-images.sh/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
       echo "scp /tmp/helm/ to bastion"
-      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/helm/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/charts/g"`
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/helm/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/charts/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      echo "scp /tmp/docker/ to bastion"
+      `echo $SCP_BASTION | sed -r 's/\{source\}/\/tmp\/docker/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/docker/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+fi
+
+if test -z "$provision_bastion"
+then
+      echo "SKIP Provision bastion"
+else
+      echo "Provision bastion"
+      echo "install docker on bastion"
+      `echo "$BASTION_SSH_RUN ls $BASTION_DIR\/docker" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
 fi
