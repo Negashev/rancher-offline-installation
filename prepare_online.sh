@@ -16,8 +16,7 @@ echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/rancher-images.txt
 echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/rancher-images.txt
 
 echo "remove dublicate from rancher-images.txt"
-sort -u /tmp/rancher/rancher-images.txt -o /tmp/rancher/rancher-images.txt
-sort /tmp/rancher/rancher-images.txt | uniq -u > /tmp/rancher/rancher-images.txt
+sort /tmp/rancher/rancher-images.txt | uniq -u | tee /tmp/rancher/rancher-images.txt
 
 echo "install docker"
 sh /get_docker.sh
