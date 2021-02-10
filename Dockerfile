@@ -17,6 +17,7 @@ ADD get_docker.sh /get_docker.sh
 ADD get_helm.sh /get_helm.sh
 ADD prepare_rancher_images.sh /prepare_rancher_images.sh
 
-ADD prepare_online.sh /prepare_online.sh
 ADD Dockerfile.bastion /Dockerfile.bastion
-CMD [ "sh", "prepare_online.sh" ]
+ADD prepare_online.sh /prepare_online.sh
+RUN chmod +x /prepare_online.sh
+ENTRYPOINT [ "/prepare_online.sh" ]
