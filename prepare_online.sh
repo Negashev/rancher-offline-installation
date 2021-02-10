@@ -35,7 +35,7 @@ sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline-images
 
 echo "install docker"
 sh /get_docker.sh
-docker build -t bastion-static -f /Dockerfile.bastion /tmp/docker
+docker build -t --build-arg DOCKER_VERSION=$DOCKER_VERSION bastion-static -f /Dockerfile.bastion /tmp/docker
 
 docker save registry:2 > /tmp/registry2.tar
 

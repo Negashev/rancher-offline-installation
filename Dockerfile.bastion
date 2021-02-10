@@ -1,4 +1,5 @@
 FROM nginx:stable-alpine
+ARG DOCKER_VERSION
 ADD install.sh /usr/share/nginx/html/
 ADD docker.bash /usr/share/nginx/html/
-ADD docker.tgz /usr/share/nginx/html/
+ADD docker-$DOCKER_VERSION.tgz /usr/share/nginx/html/docker-$DOCKER_VERSION.tgz
