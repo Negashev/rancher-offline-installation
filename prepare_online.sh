@@ -1,7 +1,7 @@
 #!/bin/sh
 apk add --update bash grep sshpass
 
-while getopts ":ib" opt; do
+while getopts ":ibp" opt; do
   case ${opt} in
     i ) create_tar=true
       ;;
@@ -73,37 +73,31 @@ else
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' | sed -r 's|\{destination\}|'$BASTION_DIR'/registry2.tar|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
       echo "scp /tmp/rancher/offline.txt to bastion"
       temp_file=$(mktemp)
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/offline.txt/g' | sed -r 's|\{destination\}|'$BASTION_DIR'/rancher-images.txt|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
       echo "scp /tmp/rancher/rancher-images.tar.gz to bastion"
       temp_file=$(mktemp)
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' | sed -r 's|\{destination\}|'$BASTION_DIR'/rancher-images.tar.gz|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
       echo "scp /tmp/rancher/rancher-load-images.sh to bastion"
       temp_file=$(mktemp)
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-load-images.sh/g' | sed -r 's|\{destination\}|'$BASTION_DIR'/rancher-load-images.sh|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
       echo "scp /tmp/helm/ to bastion"
       temp_file=$(mktemp)
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/helm/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/charts|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
       echo "scp /tmp/docker/ to bastion"
       temp_file=$(mktemp)
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/docker/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/docker|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
-      echo ""
 fi
 
 if test -z "$provision_bastion"
