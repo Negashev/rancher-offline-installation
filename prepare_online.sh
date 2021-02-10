@@ -31,7 +31,7 @@ echo "add helm chartmuseum"
 echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
 
 echo "remove dublicate from offline-images.txt"
-sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline-images.txt
+sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
 
 echo "install docker"
 sh /get_docker.sh
@@ -39,14 +39,14 @@ docker build --build-arg DOCKER_VERSION=$DOCKER_VERSION -t bastion-static -f /Do
 
 docker save registry:2 > /tmp/registry2.tar
 
-cat /tmp/rancher/offline-images.txt
+cat /tmp/rancher/offline.txt
 
 if test -z "$create_tar"
 then
       echo "SKIP creating tar.gz from offline-images.txt"
 else
       echo "Creating tar.gz from offline-images.txt"
-      bash /tmp/rancher/rancher-save-images.sh --image-list /tmp/rancher/offline-images.txt --images /tmp/rancher/rancher-images.tar.gz
+      bash /tmp/rancher/rancher-save-images.sh --image-list /tmp/rancher/offline.txt --images /tmp/rancher/rancher-images.tar.gz
 fi
 
 if test -z "$upload_to_bastion"
