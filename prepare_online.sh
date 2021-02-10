@@ -107,7 +107,13 @@ else
       echo "Provision bastion"
       echo "install docker on bastion"      
       temp_file=$(mktemp)
-      echo "$BASTION_SSH_RUN sudo -S ls $BASTION_DIR/docker" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      echo "$BASTION_SSH_RUN sudo -S sh $BASTION_DIR/docker/install.sh -f $BASTION_DIR/docker/docker-$DOCKER_VERSION.tgz" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo ""
+      echo "load registry on bastion"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S docker load --input $BASTION_DIR/registry2.tar" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
 fi
