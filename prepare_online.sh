@@ -24,9 +24,10 @@ sh /get_helm.sh
 
 echo bastion-static >> /tmp/rancher/offline-images.txt
 
-echo "add rke and huperkube versions"
+echo "add rke, huperkube and ceph versions"
 echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/offline-images.txt
 echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/offline-images.txt
+echo ceph/ceph:$CEPH_VERSION >> /tmp/rancher/offline-images.txt
 echo "add helm chartmuseum"
 echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
 
