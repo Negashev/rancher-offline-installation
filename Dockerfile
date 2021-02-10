@@ -16,7 +16,7 @@ ENV DOCKER_VERSION=19.03.9 \
     BASTION_HOST=0.0.0.0 \
     BASTION_USER=user \
     BASTION_SCP='sshpass -p "passw0rd" scp -r {source} {user}@{host}:{destination}' \
-    BASTION_SSH_RUN='sshpass -p "passw0rd" ssh {user}@{host}' \
+    BASTION_SSH_RUN='echo "passw0rd" | sshpass ssh -p "passw0rd" -oStrictHostKeyChecking=no -oPasswordAuthentication=yes {user}@{host}' \
     BASTION_DIR=\/var\/offline
 
 ADD get_docker.sh /get_docker.sh

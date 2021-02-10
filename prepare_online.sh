@@ -57,19 +57,27 @@ if test -z "$upload_to_bastion"
 then
       echo "SKIP Upload to bastion"
 else
-      echo "Upload to bastion"
+      echo "Upload to bastion in $BASTION_DIR"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S mkdir -p $BASTION_DIR" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S chmod 777 $BASTION_DIR" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
       echo "scp /tmp/registry2.tar to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/registry2.tar/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/registry2.tar/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/registry2.tar|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
       echo "scp /tmp/rancher/offline.txt to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/offline.txt/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.txt/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/offline.txt/g' | sed -r 's|\{destination\}|'$BASTION_DIR'/rancher-images.txt|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
       echo "scp /tmp/rancher/rancher-images.tar.gz to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-images.tar.gz/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-images.tar.gz/g' | 's|\{destination\}|'$BASTION_DIR'\/rancher-images.tar.gz|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
       echo "scp /tmp/rancher/rancher-load-images.sh to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-load-images.sh/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/rancher-load-images.sh/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/rancher\/rancher-load-images.sh/g' | 's|\{destination\}|'$BASTION_DIR'\/rancher-load-images.sh|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
       echo "scp /tmp/helm/ to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/helm/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/charts/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/helm/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/charts|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
       echo "scp /tmp/docker/ to bastion"
-      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/docker/g' |  sed -r "s/\{destination\}/$BASTION_DIR\/docker/g" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      `echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/docker/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/docker|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g'`
 fi
 
 if test -z "$provision_bastion"
@@ -77,6 +85,9 @@ then
       echo "SKIP Provision bastion"
 else
       echo "Provision bastion"
-      echo "install docker on bastion"
-      `echo "$BASTION_SSH_RUN ls $BASTION_DIR\/docker" | sed -r "s/\{host\}/$BASTION_HOST/g" | sed -r "s/\{user\}/$BASTION_USER/g"`
+      echo "install docker on bastion"      
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S ls $BASTION_DIR/docker" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
 fi
