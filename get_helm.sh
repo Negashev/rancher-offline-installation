@@ -1,5 +1,7 @@
 #!/bin/sh
 
+docker rm helm || true
+
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add jetstack https://charts.jetstack.io
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add rancher-stable https://releases.rancher.com/server-charts/stable
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add rook-release https://charts.rook.io/release
