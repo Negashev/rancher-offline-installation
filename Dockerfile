@@ -19,5 +19,4 @@ ADD prepare_rancher_images.sh /prepare_rancher_images.sh
 
 ADD prepare_online.sh /prepare_online.sh
 ADD Dockerfile.bastion /Dockerfile.bastion
-VOLUME [ "/hostfs" ]
 CMD [ "sh", "prepare_online.sh" ]
