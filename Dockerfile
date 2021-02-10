@@ -10,8 +10,9 @@ ENV DOCKER_VERSION=19.03.9 \
     ROOK_VERSION=v1.5.6 \
     CEPH_VERSION=v15.2.8-20201217 \
     RKE_TOOLS_VERSION=v0.1.69 \
-    HUPERKUBE_VERSION=v1.19.7-rancher1\ 
-    CHARTMUSEAM_VERSION=v0.12.0
+    HUPERKUBE_VERSION=v1.19.7-rancher1 \ 
+    CHARTMUSEAM_VERSION=v0.12.0 \ 
+    HOST_MOUNT=/tmp
 
 ADD get_docker.sh /get_docker.sh
 ADD get_helm.sh /get_helm.sh
