@@ -1,4 +1,4 @@
 FROM nginx:stable-alpine
-ADD /tmp/docker/install.sh /usr/share/nginx/html/
-ADD /tmp/docker/docker.bash /usr/share/nginx/html/
-ADD /tmp/docker/docker.tgz /usr/share/nginx/html/
+ADD install.sh /usr/share/nginx/html/
+ADD docker.bash /usr/share/nginx/html/
+ADD docker.tgz /usr/share/nginx/html/
