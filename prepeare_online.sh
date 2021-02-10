@@ -1,5 +1,6 @@
 #!/bin/sh
 sh /get_docker.sh
-#cp /Dockerfile.bastion /hostfs/tmp/docker/Dockerfile.bastion
+# sh /prepare_offline_images.sh
+sh /get_helm.sh
 
-docker build -t bastion-static -f /Dockerfile.bastion /hostfs/tmp/docker/
+docker build -t bastion-static -f /Dockerfile.bastion /tmp/docker
