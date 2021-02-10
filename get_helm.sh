@@ -10,5 +10,5 @@ docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_
 docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch rook-release/rook-ceph --version $ROOK_VERSION
 
 echo "save images from cert-manager-$CERT_MANAGER_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
-docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./cert-manager-$CERT_MANAGER_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> ./rancher-images.txt
-docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./rook-ceph-$ROOK_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> ./rancher-images.txt
+docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./cert-manager-$CERT_MANAGER_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/rancher-images.txt
+docker run --rm -it --name helm -v /tmp/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./rook-ceph-$ROOK_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/rancher-images.txt
