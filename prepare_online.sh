@@ -3,9 +3,6 @@ apk add --update bash grep
 
 sh /prepare_offline_images.sh
 
-# save all rancher images
-bash /tmp/rancher/rancher-save-images.sh
-
 echo "install helm repos"
 sh /get_helm.sh
 
