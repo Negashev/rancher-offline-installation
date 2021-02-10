@@ -16,7 +16,7 @@ ADD get_docker.sh /get_docker.sh
 ADD get_helm.sh /get_helm.sh
 ADD prepare_offline_images.sh /prepare_offline_images.sh
 
-ADD prepeare_online.sh /prepeare_online.sh
+ADD prepare_online.sh /prepare_online.sh
 ADD Dockerfile.bastion /Dockerfile.bastion
 VOLUME [ "/hostfs" ]
-CMD [ "sh", "prepeare_online.sh" ]
+CMD [ "sh", "prepare_online.sh" ]
