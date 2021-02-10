@@ -1,15 +1,15 @@
 #!/bin/sh
 apk add --update bash grep
 
-while getopts ":sb" opt; do
+while getopts ":ib" opt; do
   case ${opt} in
-    s ) create_tar=true
+    i ) create_tar=true
       ;;
     b ) upload_to_bastion=true
       ;;
     \? )
       echo "Usage:"
-      echo "    -s Skip creating tar.gz from offline-images.txt"
+      echo "    -i Skip creating tar.gz from offline-images.txt"
       echo "    -b Upload data to bastion server by \$SCP_TO_BASTION"
       exit 0
       ;;
