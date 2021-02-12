@@ -101,6 +101,12 @@ else
       echo $BASTION_SCP | sed -r 's/\{source\}/\/tmp\/docker/g' | sed -r 's|\{destination\}|'$BASTION_DIR'\/docker|g' | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
+      echo "mkdir /etc/docker on bastion"
+      temp_file=$(mktemp)
+      echo "$BASTION_SSH_RUN sudo -S mkdir /etc/docker" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      sh $temp_file
+      rm $temp_file
+      echo ""
       echo "move $BASTION_DIR/daemon.json to /etc/docker/daemon.json on bastion"
       temp_file=$(mktemp)
       echo "$BASTION_SSH_RUN sudo -S mv $BASTION_DIR/docker/daemon.json /etc/docker/daemon.json" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
