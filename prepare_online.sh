@@ -12,7 +12,7 @@ while getopts ":ibp" opt; do
     \? )
       echo "Usage:"
       echo "    -i Skip creating tar.gz from offline-images.txt"
-      echo "    -b Upload data to bastion server by \$BASTION_SCP"
+      echo "    -b Upload data to bastion server  by \$BASTION_SCP"
       echo "    -p Start instalation on bastion \$BASTION_HOST"
       exit 0
       ;;
