@@ -152,7 +152,7 @@ else
       echo ""
       echo "Run bastion-static on bastion"
       temp_file=$(mktemp)
-      echo "$BASTION_SSH_RUN sudo -S docker run -dit -p 80:80 --restart=always --name bastion-static $BASTION_HOST:5000/bastion-static" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      echo "$BASTION_SSH_RUN sudo -S docker run -dit -p 80:80 --restart=always --name bastion-static $BASTION_HOST:5000/rancher/bastion-static" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
       echo ""
