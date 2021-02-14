@@ -15,6 +15,9 @@ resource "tls_private_key" "rke" {
 resource "local_file" "pem" { 
   filename = "${path.module}/tls.pem"
   content = tls_private_key.rke.private_key_pem
+    depends_on = [
+        tls_private_key.rke,
+    ]
 }
 
 resource "null_resource" "create_ssh" {    
@@ -34,6 +37,9 @@ resource "null_resource" "create_ssh" {
             timeout  = "30s"
         }
     }
+    depends_on = [
+        local_file.pem,
+    ]
 }
 
 # Configure RKE provider
@@ -47,12 +53,12 @@ resource "rke_cluster" "rancher" {
         for_each = toset(var.rancher_nodes)
         content {
             address = nodes.key
-            user    = var.user
+            user    = var.ssh_user
             role    = ["controlplane", "worker", "etcd"]
             ssh_key = tls_private_key.rke.public_key_pem
         }
     }
-    kubernetes_version = var.kubernetes_version
+    # kubernetes_version = var.kubernetes_version # can't support latest verions of rke
     upgrade_strategy {
         drain = false
         max_unavailable_worker = "1"
