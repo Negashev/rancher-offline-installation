@@ -20,12 +20,20 @@ resource "local_file" "pem" {
     ]
 }
 
-resource "null_resource" "create_ssh" {    
+resource "local_file" "authorized_keys" { 
+  filename = "${path.module}/authorized_keys"
+  content = tls_private_key.rke.public_key_openssh
+    depends_on = [
+        local_file.pem,
+    ]
+}
+
+resource "null_resource" "upload_ssh" {    
     for_each = toset(var.rancher_nodes)
     # setup docker on rancher nodes
     provisioner "file" {
-        source      = "${path.module}/tls.pem"
-        destination = "/home/${var.ssh_user}/.ssh/authorized_keys"
+        source      = "${path.module}/authorized_keys"
+        destination = "/tmp/authorized_keys"
 
         connection {
             type     = "ssh"
@@ -38,7 +46,31 @@ resource "null_resource" "create_ssh" {
         }
     }
     depends_on = [
-        local_file.pem,
+        local_file.authorized_keys,
+    ]
+}
+
+resource "null_resource" "create_ssh" {    
+    for_each = toset(var.rancher_nodes)
+    # setup docker on rancher nodes
+    provisioner "remote-exec" {
+        inline = [
+            "echo ${var.ssh_password} | sudo -S mv /tmp/authorized_keys /home/${var.ssh_user}/.ssh/authorized_keys",
+            "echo ${var.ssh_password} | sudo -S chmod 0600 /home/${var.ssh_user}/.ssh/authorized_keys",
+        ]
+
+        connection {
+            type     = "ssh"
+            agent    = false
+            host     = each.key
+            password = var.ssh_password
+            user     = var.ssh_user
+            port     = var.ssh_port
+            timeout  = "30s"
+        }
+    }
+    depends_on = [
+        null_resource.upload_ssh,
     ]
 }
 
