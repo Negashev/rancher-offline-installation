@@ -48,6 +48,7 @@ else
       echo "install docker"
 
       echo '{ "log-opts": { "max-size": "10m", "max-file": "2" }, "insecure-registries" : ["'$BASTION_HOST':5000"] }' > /tmp/docker/daemon.json
+      cp /install_docker.sh /tmp/docker/install_docker.sh
       sh /get_docker.sh
       docker build --build-arg DOCKER_VERSION=$DOCKER_VERSION -t bastion-static -f /Dockerfile.bastion /tmp/docker
 
