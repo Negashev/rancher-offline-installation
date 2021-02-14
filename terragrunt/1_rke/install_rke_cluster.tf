@@ -29,8 +29,8 @@ resource "rke_cluster" "rancher" {
         max_unavailable_worker = "1"
     }
     private_registries {
-        url: "${var.bastion_host}:5000"
-        is_default: true
+        url = "${var.bastion_host}:5000"
+        is_default = true
     }
     depends_on = [
         null_resource.install_docker,

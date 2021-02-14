@@ -14,7 +14,7 @@ resource "null_resource" "install_docker" {
             password = var.ssh_password
             user     = var.ssh_user
             port     = var.ssh_port
-            timeout  = 30s
+            timeout  = "30s"
         }
     }
 }
