@@ -15,6 +15,7 @@ ENV DOCKER_VERSION=19.03.9 \
     NVIDIA_VERSION=0.8.1 \
     POSTGRES_OPERATOR_VERSION=v1.6.0 \
     POSTGRES_IMAGE=registry.opensource.zalan.do/acid/spilo-13:2.0-p2 \
+    HOSTS_RANCHER_CLUSTER='["0.0.0.1","0.0.0.2","0.0.0.3"]' \
     HOST_MOUNT=/tmp \ 
     BASTION_HOST=0.0.0.0 \
     BASTION_USER=user \
