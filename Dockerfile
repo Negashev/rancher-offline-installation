@@ -22,13 +22,14 @@ ENV DOCKER_VERSION=19.03.9 \
     BASTION_SSH_RUN='echo "passw0rd" | sshpass ssh -p "passw0rd" -oStrictHostKeyChecking=no -oPasswordAuthentication=yes {user}@{host}' \
     BASTION_DIR=\/var\/offline
 
-ADD get_docker.sh /get_docker.sh
-ADD get_helm.sh /get_helm.sh
-ADD get_terragrunt.sh /get_terragrunt.sh
-ADD prepare_rancher_images.sh /prepare_rancher_images.sh
-ADD install_docker.sh /install_docker.sh
+COPY get_docker.sh /get_docker.sh
+COPY get_helm.sh /get_helm.sh
+COPY get_terragrunt.sh /get_terragrunt.sh
+COPY prepare_rancher_images.sh /prepare_rancher_images.sh
+COPY install_docker.sh /install_docker.sh
+COPY /terragrunt /terragrunt
 
-ADD Dockerfile.bastion /Dockerfile.bastion
-ADD prepare_online.sh /prepare_online.sh
+COPY Dockerfile.bastion /Dockerfile.bastion
+COPY prepare_online.sh /prepare_online.sh
 RUN chmod +x /prepare_online.sh
 ENTRYPOINT [ "/prepare_online.sh" ]
