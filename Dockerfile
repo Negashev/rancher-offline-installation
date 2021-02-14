@@ -28,9 +28,11 @@ COPY get_helm.sh /get_helm.sh
 COPY get_terragrunt.sh /get_terragrunt.sh
 COPY prepare_rancher_images.sh /prepare_rancher_images.sh
 COPY install_docker.sh /install_docker.sh
-COPY /terragrunt /terragrunt
 
 COPY Dockerfile.bastion /Dockerfile.bastion
+COPY Dockerfile.terragrunt /Dockerfile.terragrunt
 COPY prepare_online.sh /prepare_online.sh
 RUN chmod +x /prepare_online.sh
 ENTRYPOINT [ "/prepare_online.sh" ]
+
+COPY /terragrunt /terragrunt
