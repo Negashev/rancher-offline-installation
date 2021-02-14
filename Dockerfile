@@ -24,6 +24,7 @@ ENV DOCKER_VERSION=19.03.9 \
 
 ADD get_docker.sh /get_docker.sh
 ADD get_helm.sh /get_helm.sh
+ADD get_terragrunt.sh /get_terragrunt.sh
 ADD prepare_rancher_images.sh /prepare_rancher_images.sh
 ADD install_docker.sh /install_docker.sh
 

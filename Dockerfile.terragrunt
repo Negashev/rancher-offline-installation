@@ -1,0 +1,3 @@
+FROM alpine/terragrunt
+WORKDIR /mount
+COPY terragrunt /terragrunt

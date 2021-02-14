@@ -53,6 +53,11 @@ else
       sh /get_docker.sh
       docker build --build-arg DOCKER_VERSION=$DOCKER_VERSION -t bastion-static -f /Dockerfile.bastion /tmp/docker
 
+      echo "create terragrunt dependency"
+      sh /get_terragrunt.sh
+      docker build -t terragrunt -f /Dockerfile.terragrunt /tmp
+      echo terragrunt >> /tmp/rancher/offline-images.txt
+
       docker save registry:2 > /tmp/registry2.tar
 
       cat /tmp/rancher/offline.txt
