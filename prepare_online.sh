@@ -1,8 +1,10 @@
 #!/bin/sh
 apk add --update bash grep sshpass
 
-while getopts ":ibp" opt; do
+while getopts ":bopi" opt; do
   case ${opt} in
+    o ) create_local_data=true
+      ;;
     i ) create_tar=true
       ;;
     b ) upload_to_bastion=true
@@ -11,7 +13,8 @@ while getopts ":ibp" opt; do
       ;;
     \? )
       echo "Usage:"
-      echo "    -i Skip creating tar.gz from offline-images.txt"
+      echo "    -o creating data on local"
+      echo "    -i creating tar.gz from offline-images.txt"
       echo "    -b Upload data to bastion server  by \$BASTION_SCP"
       echo "    -p Start instalation on bastion \$BASTION_HOST"
       exit 0
@@ -19,39 +22,45 @@ while getopts ":ibp" opt; do
   esac
 done
 
-sh /prepare_rancher_images.sh
-cp /tmp/rancher/rancher-images.txt /tmp/rancher/offline-images.txt
+if test -z "$create_local_data"
+then
+      echo "SKIP creating data on local"
+else
+      echo "====> creating data on local"
+      sh /prepare_rancher_images.sh
+      cp /tmp/rancher/rancher-images.txt /tmp/rancher/offline-images.txt
 
-echo "install helm repos"
-sh /get_helm.sh
+      echo "install helm repos"
+      sh /get_helm.sh
 
-echo bastion-static >> /tmp/rancher/offline-images.txt
+      echo bastion-static >> /tmp/rancher/offline-images.txt
 
-echo "add rke, huperkube and ceph versions"
-echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/offline-images.txt
-echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/offline-images.txt
-echo ceph/ceph:$CEPH_VERSION >> /tmp/rancher/offline-images.txt
-echo "add helm chartmuseum"
-echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
+      echo "add rke, huperkube and ceph versions"
+      echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/offline-images.txt
+      echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/offline-images.txt
+      echo ceph/ceph:$CEPH_VERSION >> /tmp/rancher/offline-images.txt
+      echo "add helm chartmuseum"
+      echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
 
-echo "remove dublicate from offline-images.txt"
-sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
+      echo "remove dublicate from offline-images.txt"
+      sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
 
-echo "install docker"
+      echo "install docker"
 
-echo '{ "log-opts": { "max-size": "10m", "max-file": "2" }, "insecure-registries" : ["'$BASTION_HOST':5000"] }' > /tmp/docker/daemon.json
-sh /get_docker.sh
-docker build --build-arg DOCKER_VERSION=$DOCKER_VERSION -t bastion-static -f /Dockerfile.bastion /tmp/docker
+      echo '{ "log-opts": { "max-size": "10m", "max-file": "2" }, "insecure-registries" : ["'$BASTION_HOST':5000"] }' > /tmp/docker/daemon.json
+      sh /get_docker.sh
+      docker build --build-arg DOCKER_VERSION=$DOCKER_VERSION -t bastion-static -f /Dockerfile.bastion /tmp/docker
 
-docker save registry:2 > /tmp/registry2.tar
+      docker save registry:2 > /tmp/registry2.tar
 
-cat /tmp/rancher/offline.txt
+      cat /tmp/rancher/offline.txt
+fi
 
 if test -z "$create_tar"
 then
       echo "SKIP creating tar.gz from offline-images.txt"
 else
-      echo "Creating tar.gz from offline-images.txt"
+      echo "====> Creating tar.gz from offline-images.txt"
       bash /tmp/rancher/rancher-save-images.sh --image-list /tmp/rancher/offline.txt --images /tmp/rancher/rancher-images.tar.gz
 fi
 
@@ -60,7 +69,7 @@ if test -z "$upload_to_bastion"
 then
       echo "SKIP Upload to bastion"
 else
-      echo "Upload to bastion in $BASTION_DIR"
+      echo "====> Upload to bastion in $BASTION_DIR"
       temp_file=$(mktemp)
       echo "$BASTION_SSH_RUN sudo -S mkdir -p $BASTION_DIR" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
@@ -119,7 +128,7 @@ if test -z "$provision_bastion"
 then
       echo "SKIP Provision bastion"
 else
-      echo "Provision bastion"
+      echo "====> Provision bastion"
       echo "install docker on bastion"
       temp_file=$(mktemp)
       echo "$BASTION_SSH_RUN sudo -S bash $BASTION_DIR/docker/install.sh -f $BASTION_DIR/docker/docker-$DOCKER_VERSION.tgz" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
@@ -134,7 +143,7 @@ else
       echo ""
       echo "Run registry on bastion"
       temp_file=$(mktemp)
-      echo "$BASTION_SSH_RUN sudo -S docker run -dit -p 5000:5000 --restart=always --name registry -v /var/lib/registry:/var/lib/registry registry:2" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      echo "$BASTION_SSH_RUN sudo -S docker stop registry || true && sudo -S docker rm registry || true && sudo -S docker run -dit -p 5000:5000 --restart=always --name registry -v /var/lib/registry:/var/lib/registry registry:2" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
       echo ""
@@ -146,13 +155,13 @@ else
       echo ""
       echo "Run chartmuseum on bastion"
       temp_file=$(mktemp)
-      echo "$BASTION_SSH_RUN sudo -S docker run -dit -p 8080:8080 --restart=always --name chartmuseum -v $BASTION_DIR/charts:/charts -e DEBUG=true -e STORAGE=local -e STORAGE_LOCAL_ROOTDIR=/charts $BASTION_HOST:5000/chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      echo "$BASTION_SSH_RUN sudo -S docker stop chartmuseum || true && sudo -S docker rm chartmuseum || true && sudo -S docker run -dit -p 8080:8080 --restart=always --name chartmuseum -v $BASTION_DIR/charts:/charts -e DEBUG=true -e STORAGE=local -e STORAGE_LOCAL_ROOTDIR=/charts $BASTION_HOST:5000/chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
       echo ""
       echo "Run bastion-static on bastion"
       temp_file=$(mktemp)
-      echo "$BASTION_SSH_RUN sudo -S docker run -dit -p 80:80 --restart=always --name bastion-static $BASTION_HOST:5000/rancher/bastion-static" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
+      echo "$BASTION_SSH_RUN sudo -S docker stop bastion-static || true && sudo -S docker rm bastion-static || true && sudo -S docker run -dit -p 80:80 --restart=always --name bastion-static $BASTION_HOST:5000/rancher/bastion-static" | sed -r 's|\{host\}|'$BASTION_HOST'|g' | sed -r 's|\{user\}|'$BASTION_USER'|g' > $temp_file
       sh $temp_file
       rm $temp_file
       echo ""
