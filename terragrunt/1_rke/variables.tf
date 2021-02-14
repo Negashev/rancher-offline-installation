@@ -27,7 +27,3 @@ variable "rancher_nodes" {
   type = list
   default = []
 }
-
-variable "kubernetes_version" {
-  type = string
-}
