@@ -5,13 +5,19 @@ docker rm helm || true
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add jetstack https://charts.jetstack.io
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add rancher-stable https://releases.rancher.com/server-charts/stable
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add rook-release https://charts.rook.io/release
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add nvidia https://nvidia.github.io/k8s-device-plugin
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add postgres-operator "https://raw.githubusercontent.com/zalando/postgres-operator/$POSTGRES_OPERATOR_VERSION/charts/postgres-operator/"
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo update
 
-echo "create local cert-manager-$CERT_MANAGER_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
+echo "create local cert-manager-$CERT_MANAGER_VERSION.tgz, nvidia-device-plugin-$NVIDIA_VERSION.tgz, postgres-operator-$POSTGRES_OPERATOR_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch jetstack/cert-manager --version $CERT_MANAGER_VERSION
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch rancher-stable/rancher --version $RANCHER_VERSION
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch rook-release/rook-ceph --version $ROOK_VERSION
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch nvidia/nvidia-device-plugin --version $NVIDIA_VERSION
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch postgres-operator/postgres-operator --version $POSTGRES_OPERATOR_VERSION
 
-echo "save images from cert-manager-$CERT_MANAGER_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
+echo "save images from cert-manager-$CERT_MANAGER_VERSION.tgz, nvidia-device-plugin-$NVIDIA_VERSION.tgz, postgres-operator-$POSTGRES_OPERATOR_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./cert-manager-$CERT_MANAGER_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/offline-images.txt
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./rook-ceph-$ROOK_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/offline-images.txt
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./nvidia-device-plugin-$NVIDIA_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/offline-images.txt
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./postgres-operator-$POSTGRES_OPERATOR_VERSION.tgz | grep -oP '(?<=image: ").*(?=")' >> /tmp/rancher/offline-images.txt
