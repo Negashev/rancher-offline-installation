@@ -7,6 +7,35 @@ terraform {
   }
 }
 
+resource "tls_private_key" "rke" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "pem" { 
+  filename = "${path.module}/tls.pem"
+  content = tls_private_key.rke.private_key_pem
+}
+
+resource "null_resource" "create_ssh" {    
+    for_each = toset(var.rancher_nodes)
+    # setup docker on rancher nodes
+    provisioner "file" {
+        source      = "${path.module}/tls.pem"
+        destination = "/home/${var.ssh_user}/.ssh/authorized_keys"
+
+        connection {
+            type     = "ssh"
+            agent    = false
+            host     = each.key
+            password = var.ssh_password
+            user     = var.ssh_user
+            port     = var.ssh_port
+            timeout  = "30s"
+        }
+    }
+}
+
 # Configure RKE provider
 provider "rke" {
   log_file = "rke_debug.log"
@@ -20,7 +49,7 @@ resource "rke_cluster" "rancher" {
             address = nodes.key
             user    = var.user
             role    = ["controlplane", "worker", "etcd"]
-            ssh_key = file(var.private_key)
+            ssh_key = tls_private_key.rke.public_key_pem
         }
     }
     kubernetes_version = var.kubernetes_version
@@ -34,5 +63,6 @@ resource "rke_cluster" "rancher" {
     }
     depends_on = [
         null_resource.install_docker,
+        null_resource.create_ssh
     ]
 }
