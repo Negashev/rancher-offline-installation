@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Clean helm"
+docker kill helm || true
 docker rm helm || true
 
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add jetstack https://charts.jetstack.io
