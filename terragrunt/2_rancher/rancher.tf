@@ -48,9 +48,33 @@ resource "helm_release" "rancher" {
 
 # Create a new rancher2_bootstrap
 resource "rancher2_bootstrap" "admin" {
+  provider = "rancher2.bootstrap"
   password = var.rancher_password
   telemetry = true
     depends_on = [
         helm_release.rancher,
+    ]
+}
+
+# Provider config for admin
+provider "rancher2" {
+  alias = "admin"
+
+  api_url = rancher2_bootstrap.admin.url
+  token_key = rancher2_bootstrap.admin.token
+  insecure = true
+    depends_on = [
+        rancher2_bootstrap.admin,
+    ]
+}
+
+# Create a new rancher2 resource using admin provider config
+resource "rancher2_catalog" "bastion" {
+  provider = "rancher2.admin"
+
+  name = "bastion"
+  url = "http://${var.bastion_host}:8080"
+    depends_on = [
+        rancher2.admin,
     ]
 }

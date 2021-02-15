@@ -38,6 +38,7 @@ provider "helm" {
 
 # Provider bootstrap config
 provider "rancher2" {
+  alias = "bootstrap"
   api_url   = "https://${var.rancher_hostname}"
   bootstrap = true
   insecure  = true
