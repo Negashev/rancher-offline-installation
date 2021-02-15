@@ -16,6 +16,7 @@ ENV DOCKER_VERSION=19.03.9 \
     POSTGRES_OPERATOR_VERSION=v1.6.0 \
     POSTGRES_IMAGE=registry.opensource.zalan.do/acid/spilo-13:2.0-p2 \
     HOSTS_RANCHER_CLUSTER='["0.0.0.1","0.0.0.2","0.0.0.3"]' \
+    HOSTS_CLUSTER_MAP='{"brain":["0.0.0.4","0.0.0.5","0.0.0.6"],"storage":{"0.0.0.7":"10.10.10.7","0.0.0.8":"10.10.10.8","0.0.0.9":"10.10.10.9"},"worker":["0.0.0.10","0.0.0.11","0.0.0.12"]}' \
     RANCHER_HOSTNAME=my.company.com \
     RANCHER_PASSWORD=passw0rd \
     HOST_MOUNT=/tmp \ 
