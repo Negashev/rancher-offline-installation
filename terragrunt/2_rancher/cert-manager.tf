@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "cert_manager" {
 }
 
 resource "helm_release" "cert_manager" {
-  namespace  = kubernetes_namespace.cert_manager.name
+  namespace  = kubernetes_namespace.cert_manager.id
   name       = "cert-manager"
   repository = "${var.bastion_host}:8080"
   chart      = "cert-manager"
