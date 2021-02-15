@@ -19,7 +19,7 @@ resource "null_resource" "install_docker_brain" {
         }
     }
     depends_on = [
-        rancher2_cluster.Cluster,
+        rancher2_cluster.cluster,
     ]
 }
 
@@ -44,7 +44,7 @@ resource "null_resource" "install_docker_storage" {
         }
     }
     depends_on = [
-        rancher2_cluster.Cluster,
+        rancher2_cluster.cluster,
     ]
 }
 
@@ -69,6 +69,6 @@ resource "null_resource" "install_docker_worker" {
         }
     }
     depends_on = [
-        rancher2_cluster.Cluster,
+        rancher2_cluster.cluster,
     ]
 }

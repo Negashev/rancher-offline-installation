@@ -21,4 +21,7 @@ resource "rancher2_cluster" "cluster" {
         is_default = true
     }
   }
+    depends_on = [
+        rancher2.admin,
+    ]
 }
