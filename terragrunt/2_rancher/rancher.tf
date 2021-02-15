@@ -68,7 +68,7 @@ provider "rancher2" {
 # Create a new rancher2 resource using admin provider config
 resource "rancher2_catalog" "bastion" {
   provider = "rancher2.admin"
-
+  version = "helm_v3"
   name = "bastion"
   url = "http://${var.bastion_host}:8080"
     depends_on = [
