@@ -1,6 +1,16 @@
 variable "api_url" {}
 variable "token_key" {}
 
+variable "rook_version" {
+  type = string
+  default = "v1.5.6"
+}
+
+variable "postgres_operator_version" {
+  type = string
+  default = "v1.6.0"
+}
+
 variable "bastion_host" {
   type = string
   default = "0.0.0.0"
