@@ -48,6 +48,7 @@ else
 
       echo "install docker"
 
+      mkdir -p /tmp/docker/
       echo '{ "log-opts": { "max-size": "10m", "max-file": "2" }, "insecure-registries" : ["'$BASTION_HOST':5000"] }' > /tmp/docker/daemon.json
       cp /install_docker.sh /tmp/docker/install_docker.sh
       sh /get_docker.sh
