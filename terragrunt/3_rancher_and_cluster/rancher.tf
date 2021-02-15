@@ -1,7 +1,7 @@
 # Provider config for admin
 provider "rancher2" {
-  api_url = rancher2_bootstrap.admin.url
-  token_key = rancher2_bootstrap.admin.token
+  api_url = var.api_url
+  token_key = var.token_key
   insecure = true
 }
 
