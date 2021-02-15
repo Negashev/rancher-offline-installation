@@ -11,5 +11,5 @@ docker kill terragrunt || true
 docker rm terragrunt || true
 
 
-docker run -dit --name terragrunt -v $HOST_MOUNT/terragrunt:/root/terragrunt -w /root/terragrunt alpine/terragrunt terragrunt run-all init
+docker run -it --name terragrunt -v $HOST_MOUNT/terragrunt:/root/terragrunt -w /root/terragrunt alpine/terragrunt terragrunt run-all init
 
