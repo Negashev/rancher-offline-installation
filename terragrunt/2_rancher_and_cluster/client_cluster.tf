@@ -8,8 +8,8 @@ resource "rancher2_cluster" "cluster" {
     }
     services {
       kubelet {
-        extra_args {
-            volume-plugin-dir = "/usr/libexec/kubernetes/kubelet-plugins/volume/exec"
+        extra_args = {
+            "volume-plugin-dir": "/usr/libexec/kubernetes/kubelet-plugins/volume/exec"
         }
         extra_binds = [
             "/usr/libexec/kubernetes/kubelet-plugins/volume/exec:/usr/libexec/kubernetes/kubelet-plugins/volume/exec",
