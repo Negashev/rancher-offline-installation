@@ -45,3 +45,12 @@ resource "helm_release" "rancher" {
     ]
   
 }
+
+# Create a new rancher2_bootstrap
+resource "rancher2_bootstrap" "admin" {
+  password = var.rancher_password
+  telemetry = true
+    depends_on = [
+        helm_release.rancher,
+    ]
+}
