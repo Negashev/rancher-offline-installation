@@ -43,8 +43,6 @@ else
       echo "add helm chartmuseum"
       echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
 
-      echo "remove dublicate from offline-images.txt"
-      sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
 
       echo "install docker"
 
@@ -58,6 +56,9 @@ else
       sh /get_terragrunt.sh
       docker build -t terragrunt -f /Dockerfile.terragrunt /tmp
       echo terragrunt >> /tmp/rancher/offline-images.txt
+      
+      echo "remove dublicate from offline-images.txt"
+      sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
 
       docker save registry:2 > /tmp/registry2.tar
 
