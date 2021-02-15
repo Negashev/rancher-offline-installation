@@ -1,6 +1,5 @@
 # Create a new rancher2 imported Cluster
 resource "rancher2_cluster" "cluster" {
-  provider = "rancher2.admin"
   name = var.cluster_name
   rke_config {
     network {
@@ -21,7 +20,4 @@ resource "rancher2_cluster" "cluster" {
         is_default = true
     }
   }
-    depends_on = [
-        rancher2.admin,
-    ]
 }
