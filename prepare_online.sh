@@ -59,7 +59,7 @@ else
       
       echo "remove dublicate from offline-images.txt"
       sort /tmp/rancher/offline-images.txt | uniq -u | tee /tmp/rancher/offline.txt
-
+      docker pull registry:2
       docker save registry:2 > /tmp/registry2.tar
 
       cat /tmp/rancher/offline.txt
