@@ -87,7 +87,7 @@ resource "rke_cluster" "rancher" {
             address = nodes.key
             user    = var.ssh_user
             role    = ["controlplane", "worker", "etcd"]
-            ssh_key = tls_private_key.rke.public_key_pem
+            ssh_key = tls_private_key.rke.private_key_pem
         }
     }
     # kubernetes_version = var.kubernetes_version # can't support latest verions of rke
