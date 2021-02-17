@@ -12,7 +12,6 @@ dependency "rke" {
   }
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "init"]
-  skip_outputs = true
 }
 inputs = {
     api_server_url  = dependency.rke.outputs.api_server_url
