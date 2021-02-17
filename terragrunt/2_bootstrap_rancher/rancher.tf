@@ -7,9 +7,7 @@ resource "kubernetes_namespace" "rancher" {
 resource "helm_release" "rancher" {
   namespace  = kubernetes_namespace.rancher.id
   name       = "rancher"
-  repository = "${var.bastion_host}:8080"
-  chart      = "rancher"
-  version    = var.rancher_version
+  chart      = "http://${var.bastion_host}:8080/charts/rancher-${var.rancher_version}.tgz"
 
   set {
     name  = "hostname"
