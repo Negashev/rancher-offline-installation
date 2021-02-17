@@ -7,7 +7,7 @@ resource "kubernetes_namespace" "rancher" {
 resource "helm_release" "rancher" {
   namespace  = kubernetes_namespace.rancher.id
   name       = "rancher"
-  chart      = "http://${var.bastion_host}:8080/charts/rancher-${var.rancher_version}.tgz"
+  chart      = "http://${var.bastion_host}:8080/charts/rancher-${var.rancher_helm_version}.tgz"
 
   set {
     name  = "hostname"
@@ -36,7 +36,7 @@ resource "helm_release" "rancher" {
 
   set {
     name  = "rancherImageTag"
-    value = var.rancher_version
+    value = var.rancher_image_tag
   }
     depends_on = [
         helm_release.cert_manager,
