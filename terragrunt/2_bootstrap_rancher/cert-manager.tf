@@ -7,9 +7,7 @@ resource "kubernetes_namespace" "cert_manager" {
 resource "helm_release" "cert_manager" {
   namespace  = kubernetes_namespace.cert_manager.id
   name       = "cert-manager"
-  repository = "${var.bastion_host}:8080"
-  chart      = "cert-manager"
-  version    = var.cert_manager_version
+  chart      = "http://${var.bastion_host}:8080/charts/cert-manager/${var.cert_manager_version}.tgz"
 
   set {
     name  = "image.repository"
