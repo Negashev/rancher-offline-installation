@@ -45,11 +45,11 @@ chartmuseum
 - on bastion, cp terragrunt data
 ```
 # store all terragrunt data on bastion
-docker run -it --rm -v /var/terragrunt:/mount terragrunt cp -r /terragrunt /mount
+sudo docker run -it --rm -v /var/terrgrunt:/mount -w /terragrunt terragrunt cp -r ./ /mount/
 ```
 - on bastion, provision all nodes offline
 ```
-docker run -it --rm -v /var/terragrunt:/mount terragrunt \
+sudo docker run -it --rm -v /var/terragrunt:/mount -w /mount terragrunt \
 -e TF_VAR_bastion_host=10.10.10.10 \
 -e TF_VAR_ssh_password=passw0rd \
 -e TF_VAR_ssh_user=username \
