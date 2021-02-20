@@ -10,7 +10,6 @@ dependency "bootstrap" {
   }
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "init"]
-  skip_outputs = true
 }
 
 inputs = {
