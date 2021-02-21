@@ -45,7 +45,7 @@ chartmuseum
 - on bastion, cp terragrunt data
 ```
 # store all terragrunt data on bastion
-sudo docker run -it --rm -v /var/terrgrunt:/mount -w /terragrunt terragrunt cp -r ./ /mount/
+sudo docker run -it --rm -v /var/terragrunt:/mount -w /terragrunt terragrunt cp -r ./ /mount/
 ```
 - on bastion, provision all nodes offline
 ```
