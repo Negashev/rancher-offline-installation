@@ -8,7 +8,7 @@ variable "rook_version" {
 
 variable "postgres_operator_version" {
   type = string
-  default = "v1.6.0"
+  default = "1.6.0"
 }
 
 variable "bastion_host" {
