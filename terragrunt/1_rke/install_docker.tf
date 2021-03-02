@@ -3,8 +3,8 @@ resource "null_resource" "install_docker" {
     # setup docker on rancher nodes
     provisioner "remote-exec" {
         inline = [
-            "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
             "echo ${var.ssh_password} | sudo -S usermod -aG root ${var.ssh_user}",
+            "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
         ]
 
         connection {
