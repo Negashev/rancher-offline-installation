@@ -10,7 +10,7 @@ resource "kubernetes_manifest" "rook-ceph" {
     }
     "spec" = {
       "cephVersion" = {
-        "image" = "${var.bastion_host}/ceph/ceph:${var.ceph_version}"
+        "image" = "${var.bastion_host}:5000/ceph/ceph:${var.ceph_version}"
       }
       "dashboard" = {
         "enabled" = true
