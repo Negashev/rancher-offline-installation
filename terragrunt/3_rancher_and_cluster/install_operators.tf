@@ -1,10 +1,5 @@
 resource "rancher2_cluster_sync" "cluster" {
   cluster_id =  rancher2_cluster.cluster.id
-  node_pool_ids = [
-    null_resource.install_docker_brain,
-    null_resource.install_docker_storage,
-    null_resource.install_docker_worker,
-  ]
 }
 
 resource "rancher2_project" "storage" {
