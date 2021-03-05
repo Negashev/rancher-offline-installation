@@ -6,6 +6,7 @@ resource "kubernetes_namespace" "rancher" {
 
 resource "helm_release" "rancher" {
   namespace  = kubernetes_namespace.rancher.id
+  wait       = "true"
   name       = "rancher"
   chart      = "http://${var.bastion_host}:8080/charts/rancher-${var.rancher_helm_version}.tgz"
 
