@@ -1,6 +1,15 @@
+resource "rancher2_cluster_sync" "cluster" {
+  cluster_id =  rancher2_cluster.cluster.id
+  node_pool_ids = [
+    null_resource.install_docker_brain,
+    null_resource.install_docker_storage,
+    null_resource.install_docker_worker,
+  ]
+}
+
 resource "rancher2_project" "storage" {
   name = "Storage"
-  cluster_id = rancher2_cluster.cluster.id
+  cluster_id = rancher2_cluster_sync.cluster.id
   depends_on = [
     null_resource.install_docker_brain,
     null_resource.install_docker_storage,
@@ -44,7 +53,7 @@ resource "rancher2_app" "storage" {
 
 resource "rancher2_namespace" "database" {
   name = "postgres-operator"
-  project_id = rancher2_cluster.cluster.default_project_id
+  project_id = rancher2_cluster_sync.cluster.default_project_id
   depends_on = [
     null_resource.install_docker_brain,
     null_resource.install_docker_storage,
@@ -55,7 +64,7 @@ resource "rancher2_namespace" "database" {
 resource "rancher2_app" "database" {
   catalog_name = "bastion"
   name = "postgres-operator"
-  project_id = rancher2_cluster.cluster.default_project_id
+  project_id = rancher2_cluster_sync.cluster.default_project_id
   template_name = "postgres-operator"
   template_version = var.postgres_operator_version
   target_namespace = rancher2_namespace.database.id
