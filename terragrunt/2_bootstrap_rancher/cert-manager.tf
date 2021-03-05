@@ -6,6 +6,7 @@ resource "kubernetes_namespace" "cert_manager" {
 
 resource "helm_release" "cert_manager" {
   namespace  = kubernetes_namespace.cert_manager.id
+  wait       = "true"
   name       = "cert-manager"
   chart      = "http://${var.bastion_host}:8080/charts/cert-manager-${var.cert_manager_version}.tgz"
 
