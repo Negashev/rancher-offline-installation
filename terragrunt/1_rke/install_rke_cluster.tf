@@ -108,6 +108,6 @@ resource "rke_cluster" "rancher" {
 
 resource "local_file" "kube_cluster_yaml" {
   filename = "${path.root}/kube_config_cluster.yml"
-  sensitive_content  = "${rke_cluster.rancher.kube_config_yaml}"
+  sensitive_content  = rke_cluster.rancher.kube_config_yaml
 }
 
