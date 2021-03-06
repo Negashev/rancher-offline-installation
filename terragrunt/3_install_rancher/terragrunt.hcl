@@ -1,5 +1,5 @@
 dependencies {
-  paths = ["../1_rke", "../2_install_cet_manager"]
+  paths = ["../1_rke", "../2_install_cert_manager"]
 }
 dependency "rke" {
   config_path = "../1_rke"

@@ -7,6 +7,10 @@ variable "bastion_host" {
   type = string
   default = "0.0.0.0"
 }
+variable "cert_manager_version" {
+  type = string
+  default = "v1.0.4"
+}
 variable "rancher_helm_version" {
   type = string
   default = "2.5.5"
