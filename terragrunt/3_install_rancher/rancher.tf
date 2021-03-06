@@ -43,23 +43,5 @@ resource "helm_release" "rancher" {
   set {
     name  = "certmanager.version"
     value = var.cert_manager_version
-  }
-    depends_on = [
-        helm_release.cert_manager,
-    ]
-  
-}
-
-# Configure the Rancher2 provider to bootstrap and admin
-# Provider config for bootstrap
-provider "rancher2" {
-  api_url   = "https://${var.rancher_hostname}"
-  bootstrap = true
-  insecure  = true
-}
-
-# Create a new rancher2_bootstrap using bootstrap provider config
-resource "rancher2_bootstrap" "admin" {
-  password = var.rancher_password
-  telemetry = true
+  }  
 }
