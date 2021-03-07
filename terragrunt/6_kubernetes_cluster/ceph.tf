@@ -238,6 +238,10 @@ resource "kubernetes_manifest" "storage-class" {
     "kind" = "StorageClass"
     "metadata" = {
       "name" = "rook-ceph-block"
+      "annotations": {
+        "storageclass.beta.kubernetes.io/is-default-class": "true",
+        "storageclass.kubernetes.io/is-default-class": "true"
+      }
     }
     "parameters" = {
       "clusterID" = "rook-ceph"
