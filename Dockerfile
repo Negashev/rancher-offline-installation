@@ -1,5 +1,5 @@
 FROM docker
-ENV DOCKER_VERSION=19.03.9 \
+ENV DOCKER_VERSION=19.03.15 \
     DOCKER_ARCH=x86_64 \
     INSTALL_SH_URL=https://raw.githubusercontent.com/Jrohy/docker-install/master/install.sh \
     INSTALL_BASH_URL=https://raw.githubusercontent.com/Jrohy/docker-install/master/docker.bash \

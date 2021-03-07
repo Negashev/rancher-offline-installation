@@ -33,7 +33,7 @@ variable "ssh_user" {
 
 variable "docker_version" {
   type = string
-  default = "19.03.9"
+  default = "19.03.15"
 }
 
 variable "rancher_hostname" {
