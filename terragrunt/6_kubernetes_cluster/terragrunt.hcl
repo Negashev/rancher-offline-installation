@@ -1,3 +1,3 @@
 dependencies {
-  paths = ["../3_rancher_and_cluster"]
+  paths = ["../5_rancher_and_cluster"]
 }
