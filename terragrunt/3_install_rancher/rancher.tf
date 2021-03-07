@@ -39,9 +39,5 @@ resource "helm_release" "rancher" {
     name  = "rancherImageTag"
     value = var.rancher_image_tag
   }
-  
-  set {
-    name  = "certmanager.version"
-    value = var.cert_manager_version
-  }  
+ 
 }
