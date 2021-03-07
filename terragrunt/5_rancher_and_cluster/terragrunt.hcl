@@ -1,9 +1,9 @@
 dependencies {
-  paths = ["../2_bootstrap_rancher"]
+  paths = ["../4_bootstrap_rancher"]
 }
 
 dependency "bootstrap" {
-  config_path = "../2_bootstrap_rancher"
+  config_path = "../4_bootstrap_rancher"
   mock_outputs = {
     api_url = "temporary-dummy-id"
     token_key = "temporary-dummy-id"
