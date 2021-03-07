@@ -1,8 +1,3 @@
-variable "api_server_url" {}
-variable "kube_admin_user" {}
-variable "client_cert" {}
-variable "client_key" {}
-variable "ca_crt" {}
 variable "bastion_host" {
   type = string
   default = "0.0.0.0"
