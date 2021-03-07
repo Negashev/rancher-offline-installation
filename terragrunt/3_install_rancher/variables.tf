@@ -13,12 +13,12 @@ variable "cert_manager_version" {
 }
 variable "rancher_helm_version" {
   type = string
-  default = "2.5.5"
+  default = "2.5.6"
 }
 
 variable "rancher_image_tag" {
   type = string
-  default = "v2.5.5"
+  default = "v2.5.6"
 }
 
 variable "rancher_hostname" {

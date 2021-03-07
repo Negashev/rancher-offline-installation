@@ -3,7 +3,7 @@ variable "token_key" {}
 
 variable "rook_version" {
   type = string
-  default = "v1.5.6"
+  default = "v1.5.8"
 }
 
 variable "postgres_operator_version" {

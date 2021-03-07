@@ -25,5 +25,5 @@ resource "rancher2_cluster" "cluster" {
 # for running kubectl
 resource "local_file" kubeconfig {
   filename = "/mount/kubeconfig"
-  content  = "${rancher2_cluster.cluster.kube_config}"
+  content  = rancher2_cluster.cluster.kube_config
 }
