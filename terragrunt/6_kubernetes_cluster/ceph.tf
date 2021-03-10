@@ -127,6 +127,12 @@ resource "kubernetes_manifest" "rook-ceph" {
       }
     }
   }
+  wait_for = {
+    fields = {
+      "status.phase" = "Ready"
+      "status.ceph.health" = "HEALTH_OK"
+    }
+  }
 }
 resource "kubernetes_manifest" "object-storage" {
   provider = kubernetes-alpha
@@ -202,6 +208,11 @@ resource "kubernetes_manifest" "object-storage" {
       }
       "preservePoolsOnDelete" = true
     }
+  }  
+  wait_for = {
+    fields = {
+      "status.phase" = "Connected"
+    }
   }
     depends_on = [
         kubernetes_manifest.rook-ceph,
@@ -223,6 +234,11 @@ resource "kubernetes_manifest" "block-storage" {
       "replicated" = {
         "size" = 3
       }
+    }
+  }
+  wait_for = {
+    fields = {
+      "status.phase" = "Ready"
     }
   }
     depends_on = [
