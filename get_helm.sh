@@ -19,4 +19,4 @@ docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch postgres-operator/postgres-operator --version $POSTGRES_OPERATOR_VERSION
 
 echo "save images from rancher-$RANCHER_VERSION.tgz, cert-manager-$CERT_MANAGER_VERSION.tgz, nvidia-device-plugin-$NVIDIA_VERSION.tgz, postgres-operator-$POSTGRES_OPERATOR_VERSION.tgz and rook-ceph-$ROOK_VERSION.tgz"
-for i in `ls /tmp/helm`; do docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./$i | grep -oP '(?<=image: ").*(?=")' | tr -d '"' >> /tmp/rancher/offline-images.txt; done
+for i in `ls /tmp/helm`; do docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./$i | grep -oP '(?<=image: ).*(?=)' | tr -d '"' >> /tmp/rancher/offline-images.txt; done
