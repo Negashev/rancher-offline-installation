@@ -16,3 +16,7 @@ inputs = {
     api_url   = dependency.bootstrap.outputs.api_url
     token_key = dependency.bootstrap.outputs.token_key
 }
+
+retryable_errors = [
+  "(?s).*Cluster ID .* is not active.*"
+]
