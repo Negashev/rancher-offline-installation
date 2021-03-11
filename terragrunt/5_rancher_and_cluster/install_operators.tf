@@ -70,7 +70,7 @@ resource "rancher2_app" "database" {
   template_version = var.postgres_operator_version
   target_namespace = rancher2_namespace.database.id
   answers = {
-    "image.registry" = "${var.bastion_host}:5000/registry.opensource.zalan.do/acid/postgres-operator"
+    "image.registry" = "${var.bastion_host}:5000/registry.opensource.zalan.do"
   }
   depends_on = [
     rancher2_namespace.database
