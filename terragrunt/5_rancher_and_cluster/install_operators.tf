@@ -40,12 +40,12 @@ resource "rancher2_app" "storage" {
     "tolerations[0].key" = "storage"
     "tolerations[0].operator" = "Equal"
     "tolerations[0].value" = "services"
-    "cephcsi.image"= "${var.bastion_host}:5000/quay.io/cephcsi/cephcsi:v3.2.0" #TODO add tag to variables
-    "registrar.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1" #TODO add tag to variables
-    "provisioner.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-provisioner:v2.0.0" #TODO add tag to variables
-    "snapshotter.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.0" #TODO add tag to variables
-    "attacher.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-attacher:v3.0.0" #TODO add tag to variables
-    "resizer.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-resizer:v1.0.0" #TODO add tag to variables
+    "csi.cephcsi.image"= "${var.bastion_host}:5000/quay.io/cephcsi/cephcsi:v3.2.0" #TODO add tag to variables
+    "csi.registrar.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1" #TODO add tag to variables
+    "csi.provisioner.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-provisioner:v2.0.0" #TODO add tag to variables
+    "csi.snapshotter.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-snapshotter:v3.0.0" #TODO add tag to variables
+    "csi.attacher.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-attacher:v3.0.0" #TODO add tag to variables
+    "csi.resizer.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-resizer:v1.0.0" #TODO add tag to variables
   }
   depends_on = [
     rancher2_namespace.storage
