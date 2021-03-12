@@ -53,6 +53,11 @@ resource "rancher2_app" "storage" {
   ]
 }
 
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [rancher2_app.previous]
+  create_duration = "60s"
+}
+
 resource "rancher2_namespace" "database" {
   name = "postgres-operator"
   project_id = rancher2_cluster_sync.cluster.default_project_id
