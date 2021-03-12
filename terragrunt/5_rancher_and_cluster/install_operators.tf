@@ -73,6 +73,7 @@ resource "rancher2_app" "database" {
   wait = true
   answers = {
     "image.registry" = "${var.bastion_host}:5000/registry.opensource.zalan.do"
+    "configKubernetes.enable_pod_antiaffinity" = "true"
   }
   depends_on = [
     rancher2_namespace.database
