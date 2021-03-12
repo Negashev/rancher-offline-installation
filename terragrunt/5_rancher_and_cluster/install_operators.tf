@@ -27,6 +27,7 @@ resource "rancher2_app" "storage" {
   template_name = "rook-ceph"
   template_version = var.rook_version
   target_namespace = rancher2_namespace.storage.id
+  wait = true
   answers = {
     "discover.tolerations[0].effect" = "NoSchedule"
     "discover.tolerations[0].key" = "storage"
@@ -69,6 +70,7 @@ resource "rancher2_app" "database" {
   template_name = "postgres-operator"
   template_version = var.postgres_operator_version
   target_namespace = rancher2_namespace.database.id
+  wait = true
   answers = {
     "image.registry" = "${var.bastion_host}:5000/registry.opensource.zalan.do"
   }
