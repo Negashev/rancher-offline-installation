@@ -54,7 +54,7 @@ resource "rancher2_app" "storage" {
 }
 
 resource "time_sleep" "wait_60_seconds" {
-  depends_on = [rancher2_app.previous]
+  depends_on = [rancher2_app.storage]
   create_duration = "60s"
 }
 
