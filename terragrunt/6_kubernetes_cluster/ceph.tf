@@ -48,10 +48,7 @@ resource "kubernetes_manifest" "rook-ceph" {
           }
           "spec" = {
             "data_devices" = {
-              "size" = "2TB:"
-            }
-            "db_devices" = {
-              "size" = "50G:1TB"
+              "size" = "40G:"
             }
           }
         },
@@ -106,22 +103,18 @@ resource "kubernetes_manifest" "rook-ceph" {
       "resources" = {
         "mgr" = {
           "limits" = {
-            "cpu" = "1"
-            "memory" = "1Gi"
+            "memory" = "512Mi"
           }
           "requests" = {
-            "cpu" = "1"
-            "memory" = "1Gi"
+            "memory" = "512Mi"
           }
         }
         "mon" = {
           "limits" = {
-            "cpu" = "1"
-            "memory" = "1Gi"
+            "memory" = "512Mi"
           }
           "requests" = {
-            "cpu" = "1"
-            "memory" = "1Gi"
+            "memory" = "512Mi"
           }
         }
       }
