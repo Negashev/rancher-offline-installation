@@ -78,7 +78,6 @@ resource "rancher2_app" "database" {
   wait = true
   answers = {
     "image.registry" = "${var.bastion_host}:5000/registry.opensource.zalan.do"
-    "configKubernetes.enable_pod_antiaffinity" = "true"
     "podLabels.operator" = "zalando-operator"
     "affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels.operator"= "zalando-operator"
     "affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey"= "kubernetes.io/hostname"
