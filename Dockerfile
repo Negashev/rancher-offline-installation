@@ -31,6 +31,7 @@ COPY get_helm.sh /get_helm.sh
 COPY get_terragrunt.sh /get_terragrunt.sh
 COPY prepare_rancher_images.sh /prepare_rancher_images.sh
 COPY install_docker.sh /install_docker.sh
+COPY install_docker_binary.sh /install_docker_binary.sh
 
 COPY Dockerfile.bastion /Dockerfile.bastion
 COPY Dockerfile.terragrunt /Dockerfile.terragrunt
