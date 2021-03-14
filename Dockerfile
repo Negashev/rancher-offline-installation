@@ -1,8 +1,6 @@
 FROM docker
 ENV DOCKER_VERSION=19.03.15 \
     DOCKER_ARCH=x86_64 \
-    INSTALL_SH_URL=https://raw.githubusercontent.com/Jrohy/docker-install/master/install.sh \
-    INSTALL_BASH_URL=https://raw.githubusercontent.com/Jrohy/docker-install/master/docker.bash \
     RANCHER_VERSION=v2.5.6 \
     HELM_VERSION=3.4.1 \
     KUBECTL_VERSION=1.19.7 \
