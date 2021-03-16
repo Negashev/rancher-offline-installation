@@ -1,3 +1,26 @@
+resource "kubernetes_manifest" "config-map-ceph" {
+  provider = kubernetes-alpha
+  manifest = {
+    "apiVersion" = "v1"
+    "data" = {
+      "config" = <<-EOT
+        [global]
+        public network = ${var.public_network}
+        cluster network = ${var.cluster_network}
+        public addr = ""
+        cluster addr = ""
+        EOT
+    }
+    "kind" = "ConfigMap"
+    "metadata" = {
+      "name" = "rook-config-override"
+      "namespace" = "rook-ceph"
+    }
+  }
+}
+
+
+
 resource "kubernetes_manifest" "rook-ceph" {
   provider = kubernetes-alpha
 
@@ -126,6 +149,9 @@ resource "kubernetes_manifest" "rook-ceph" {
       "status.ceph.health" = "HEALTH_OK"
     }
   }
+    depends_on = [
+        kubernetes_manifest.config-map-ceph
+    ]
 }
 resource "kubernetes_manifest" "object-storage" {
   provider = kubernetes-alpha
