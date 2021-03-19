@@ -17,12 +17,8 @@ resource "kubernetes_manifest" "postgresql-cluster" {
       "postgresql" = {
         "version" = "13"
       }
-      "preparedDatabases" = {
-        "bar" = {}
-      }
       "teamId" = "acid"
       "users" = {
-        "foo_user" = []
         "zalando" = [
           "superuser",
           "createdb",
@@ -38,9 +34,9 @@ resource "kubernetes_manifest" "postgresql-cluster" {
       "status.PostgresClusterStatus" = "Running"
     }
   }
-    depends_on = [
-        kubernetes_manifest.rook-ceph,
-        kubernetes_manifest.block-storage,
-        kubernetes_manifest.storage-class
-    ]
+  depends_on = [
+    kubernetes_manifest.rook-ceph,
+    kubernetes_manifest.block-storage,
+    kubernetes_manifest.storage-class
+  ]
 }
