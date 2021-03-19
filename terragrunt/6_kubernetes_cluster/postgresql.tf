@@ -12,7 +12,7 @@ resource "kubernetes_manifest" "postgresql-cluster" {
       "databases" = {
         "foo" = "zalando"
       }
-      "dockerImage" = "${var.bastion_host}:5000/registry.opensource.zalan.do/acid/spilo-13:2.0-p2"
+      "dockerImage" = "${var.bastion_host}:5000/registry.opensource.zalan.do/acid/spilo-13:2.0-p4"
       "numberOfInstances" = 3
       "postgresql" = {
         "version" = "13"
