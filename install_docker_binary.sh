@@ -39,6 +39,6 @@ EOF
 rm -rf docker
 tar xvzf $1
 cp docker/* /usr/bin/
-rm docker
+rm -rf docker
 systemctl enable docker.service
 systemctl restart docker
