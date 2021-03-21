@@ -1,3 +1,5 @@
+variable "kube_config_content" {}
+
 variable "ceph_version" {
   type = string
   default = "v15.2.9-20210224"
