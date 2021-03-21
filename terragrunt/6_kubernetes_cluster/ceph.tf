@@ -228,11 +228,6 @@ resource "kubernetes_manifest" "object-storage" {
       "preservePoolsOnDelete" = true
     }
   }  
-  wait_for = {
-    fields = {
-      "status.phase" = "Connected"
-    }
-  }
     depends_on = [
         kubernetes_manifest.rook-ceph,
     ]
