@@ -12,7 +12,7 @@ dependency "cluster" {
 }
 
 inputs = {
-    token_key = dependency.cluster.outputs.kube_config_content
+    kube_config_content = dependency.cluster.outputs.kube_config_content
 }
 
 retryable_errors = [
