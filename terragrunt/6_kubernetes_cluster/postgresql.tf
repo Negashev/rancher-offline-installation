@@ -29,11 +29,11 @@ resource "kubernetes_manifest" "postgresql-cluster" {
       }
     }
   }
-  wait_for = {
-    fields = {
-      "status.PostgresClusterStatus" = "Running"
-    }
-  }
+#   wait_for = {
+#     fields = {
+#       "status.PostgresClusterStatus" = "Running"
+#     }
+#   }
   depends_on = [
     kubernetes_manifest.rook-ceph,
     kubernetes_manifest.storage-class
