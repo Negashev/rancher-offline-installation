@@ -2,6 +2,12 @@ resource "rancher2_cluster_sync" "cluster" {
   cluster_id =  rancher2_cluster.cluster.id
 }
 
+resource "time_sleep" "wait_120_seconds" {
+  depends_on = [rancher2_cluster_sync.cluster]
+  create_duration = "120s"
+}
+
+
 resource "rancher2_project" "storage" {
   name = "Storage"
   cluster_id = rancher2_cluster_sync.cluster.id
@@ -9,6 +15,7 @@ resource "rancher2_project" "storage" {
     null_resource.install_docker_brain,
     null_resource.install_docker_storage,
     null_resource.install_docker_worker,
+    time_sleep.wait_120_seconds
   ]
 }
 
@@ -16,7 +23,8 @@ resource "rancher2_namespace" "storage" {
   name = "rook-ceph"
   project_id = rancher2_project.storage.id
   depends_on = [
-    rancher2_project.storage
+    rancher2_project.storage,
+    time_sleep.wait_120_seconds
   ]
 }
 
@@ -49,7 +57,8 @@ resource "rancher2_app" "storage" {
     "csi.resizer.image"= "${var.bastion_host}:5000/k8s.gcr.io/sig-storage/csi-resizer:v1.0.0" #TODO add tag to variables
   }
   depends_on = [
-    rancher2_namespace.storage
+    rancher2_namespace.storage,
+    time_sleep.wait_120_seconds
   ]
 }
 
@@ -65,6 +74,7 @@ resource "rancher2_namespace" "database" {
     null_resource.install_docker_brain,
     null_resource.install_docker_storage,
     null_resource.install_docker_worker,
+    time_sleep.wait_120_seconds
   ]
 }
 
@@ -83,6 +93,7 @@ resource "rancher2_app" "database" {
     "affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey"= "kubernetes.io/hostname"
   }
   depends_on = [
-    rancher2_namespace.database
+    rancher2_namespace.database,
+    time_sleep.wait_120_seconds
   ]
 }
