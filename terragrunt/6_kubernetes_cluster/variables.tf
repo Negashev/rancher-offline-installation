@@ -17,3 +17,23 @@ variable "cluster_network" {
   type = string
   default = "0.0.11.0/24"
 }
+
+variable "data_devices_size" {
+  type = string
+  default = ""
+}
+
+variable "db_devices_size" {
+  type = string
+  default = ""
+}
+
+variable "journal_devices_size" {
+  type = string
+  default = ""
+}
+
+variable "wal_devices_size" {
+  type = string
+  default = ""
+}
