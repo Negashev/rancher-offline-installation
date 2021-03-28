@@ -56,5 +56,5 @@ sudo docker run -it --rm -v /var/terragrunt:/mount -w /mount terragrunt \
 -e TF_VAR_rancher_nodes='["0.0.0.1","0.0.0.2","0.0.0.3"]' \
 -e TF_VAR_rancher_hostname=my.company.com \
 -e TF_VAR_rancher_password=Rancher-passw0rd \
--e TF_VAR_cluster_nodes='{"brain":["0.0.0.4","0.0.0.5","0.0.0.6"],"storage":{"0.0.0.7":"10.10.10.7","0.0.0.8":"10.10.10.8","0.0.0.9":"10.10.10.9"},"worker":["0.0.0.10","0.0.0.11","0.0.0.12"]}' \
+-e TF_VAR_cluster_nodes='{"brain":["0.0.0.4","0.0.0.5","0.0.0.6"],"storage":["0.0.0.7","0.0.0.8","0.0.0.9"],"worker":["0.0.0.10","0.0.0.11","0.0.0.12"]}' \
 terragrunt run-all apply
