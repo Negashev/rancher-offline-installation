@@ -16,6 +16,11 @@ variable "bastion_host" {
   default = "0.0.0.0"
 }
 
+variable "network_plugin" {
+  type = string
+  default = "canal"
+}
+
 variable "ssh_password" {
   type = string
   default = "passw0rd"
