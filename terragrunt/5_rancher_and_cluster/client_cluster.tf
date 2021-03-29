@@ -4,6 +4,9 @@ resource "rancher2_cluster" "cluster" {
   rke_config {
     network {
       plugin = var.network_plugin
+      options = {
+        "${var.network_plugin}_cidr" = var.public_network
+      }
     }
     services {
       kubelet {
