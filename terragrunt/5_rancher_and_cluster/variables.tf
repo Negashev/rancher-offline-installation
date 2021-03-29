@@ -21,6 +21,11 @@ variable "network_plugin" {
   default = "canal"
 }
 
+variable "public_network" {
+  type = string
+  default = "0.0.10.0/24"
+}
+
 variable "ssh_password" {
   type = string
   default = "passw0rd"
