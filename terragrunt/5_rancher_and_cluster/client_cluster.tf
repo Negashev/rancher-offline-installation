@@ -3,7 +3,7 @@ resource "rancher2_cluster" "cluster" {
   name = var.cluster_name
   rke_config {
     network {
-      plugin = "canal"
+      plugin = var.network_plugin
     }
     services {
       kubelet {
