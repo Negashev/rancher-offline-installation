@@ -52,7 +52,7 @@ variable "cluster_name" {
 variable "cluster_nodes" {
   type = object({
     brain = list(string),
-    storage = map(any),
+    storage = list(string),
     worker = list(string)
   })
   default = {
