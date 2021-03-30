@@ -6,6 +6,7 @@ resource "null_resource" "install_docker_brain" {
             "echo ${var.ssh_password} | sudo -S usermod -aG root ${var.ssh_user}",
             "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
             "echo ${var.ssh_password} | ${rancher2_cluster.cluster.cluster_registration_token.0.node_command} --etcd --controlplane",
+            "while ! nc -z localhost 10250 ; do sleep 1 ; done"
         ]
 
         connection {
@@ -31,6 +32,7 @@ resource "null_resource" "install_docker_storage" {
             "echo ${var.ssh_password} | sudo -S usermod -aG root ${var.ssh_user}",
             "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
             "echo ${var.ssh_password} | ${rancher2_cluster.cluster.cluster_registration_token.0.node_command} --worker --label app=storage --taints storage=services:NoSchedule --internal-address ${each.key} --address ${each.key}",
+            "while ! nc -z localhost 10250 ; do sleep 1 ; done"
         ]
 
         connection {
@@ -56,6 +58,7 @@ resource "null_resource" "install_docker_worker" {
             "echo ${var.ssh_password} | sudo -S usermod -aG root ${var.ssh_user}",
             "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
             "echo ${var.ssh_password} | ${rancher2_cluster.cluster.cluster_registration_token.0.node_command} --worker",
+            "while ! nc -z localhost 10250 ; do sleep 1 ; done"
         ]
 
         connection {
