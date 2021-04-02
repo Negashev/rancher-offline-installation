@@ -27,3 +27,8 @@ variable "rancher_nodes" {
   type = list
   default = []
 }
+
+variable "kubernetes_version" {
+  type = string
+  default = "v1.20.4-rancher1-1"
+}
