@@ -99,6 +99,7 @@ resource "rke_cluster" "rancher" {
         url = "${var.bastion_host}:5000"
         is_default = true
     }
+    kubernetes_version = var.kubernetes_version
     depends_on = [
         null_resource.install_docker,
         null_resource.create_ssh
