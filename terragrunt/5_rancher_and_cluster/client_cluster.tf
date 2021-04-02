@@ -8,6 +8,7 @@ resource "rancher2_cluster" "cluster" {
         "${var.network_plugin}_cidr" = var.public_network
       }
     }
+    kubernetes_version = var.kubernetes_version
     services {
       kubelet {
         extra_args = {
