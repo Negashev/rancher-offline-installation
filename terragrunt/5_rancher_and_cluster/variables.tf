@@ -66,3 +66,8 @@ variable "cluster_nodes" {
     "worker"=["0.0.0.10","0.0.0.11","0.0.0.12"]
     }
 }
+
+variable "kubernetes_version" {
+  type = string
+  default = "v1.20.4-rancher1-1"
+}
