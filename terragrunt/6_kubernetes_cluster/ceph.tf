@@ -102,7 +102,6 @@ resource "kubernetes_manifest" "rook-ceph" {
       "network" = {
         "hostNetwork" = true
         "provider" = "host"
-        "selectors" = null
       }
       "placement" = {
         "all" = {
