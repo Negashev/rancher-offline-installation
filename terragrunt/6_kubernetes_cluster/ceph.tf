@@ -71,16 +71,16 @@ resource "kubernetes_manifest" "rook-ceph" {
           }
           "spec" = {
             "data_devices" = {
-              "size" = "${var.data_devices_size != "" ? var.data_devices_size : null}"
+              "size" = var.data_devices_size != "" ? var.data_devices_size : null
             },
             "db_devices" = {
-              "size" = "${var.db_devices_size != "" ? var.db_devices_size : null}"
+              "size" = var.db_devices_size != "" ? var.db_devices_size : null
             },
             "journal_devices" = {
-              "size" = "${var.journal_devices_size != "" ? var.journal_devices_size : null}"
+              "size" = var.journal_devices_size != "" ? var.journal_devices_size : null
             },
             "wal_devices" = {
-              "size" = "${var.wal_devices_size != "" ? var.wal_devices_size : null}"
+              "size" = var.wal_devices_size != "" ? var.wal_devices_size : null
             }
           }
         },
