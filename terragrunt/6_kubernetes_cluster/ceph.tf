@@ -302,3 +302,29 @@ resource "kubernetes_manifest" "storage-class" {
         kubernetes_manifest.block-storage,
     ]
 }
+
+resource "kubernetes_manifest" "object-storage-user" {
+  provider = kubernetes-alpha
+  manifest = {
+    "apiVersion" = "ceph.rook.io/v1"
+    "kind" = "CephObjectStoreUser"
+    "metadata" = {
+      "name" = "my-user"
+      "namespace" = "rook-ceph"
+    }
+    "spec" = {
+      "displayName" = "my-display-name"
+      "store" = "my-store"
+    }
+  }
+  wait_for = {
+    fields = {
+      "status.phase" = "Ready"
+    }
+  }
+  depends_on = [
+      kubernetes_manifest.rook-ceph,
+      kubernetes_manifest.block-storage,
+      kubernetes_manifest.object-storage,
+  ]
+}
