@@ -306,7 +306,7 @@ resource "kubernetes_manifest" "object-storage-user" {
 resource "null_resource" "remove_rook_config_override" {    
     provisioner "remote-exec" {
         inline = [
-            "echo ${var.ssh_password} | sudo -S docker run -it --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete configmap rook-config-override",
+            "echo ${var.ssh_password} | sudo -S docker run --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete configmap rook-config-override",
         ]
 
         connection {
@@ -355,7 +355,7 @@ resource "kubernetes_manifest" "config-map-ceph" {
 resource "null_resource" "restart_osd" {    
     provisioner "remote-exec" {
         inline = [
-            "echo ${var.ssh_password} | sudo -S docker run -it --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete pod --selector=app=rook-ceph-osd",
+            "echo ${var.ssh_password} | sudo -S docker run --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete pod --selector=app=rook-ceph-osd",
         ]
 
         connection {
