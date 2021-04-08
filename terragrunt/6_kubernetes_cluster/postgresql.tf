@@ -36,6 +36,7 @@ resource "kubernetes_manifest" "postgresql-cluster" {
 #   }
   depends_on = [
     kubernetes_manifest.rook-ceph,
-    kubernetes_manifest.storage-class
+    kubernetes_manifest.storage-class,
+    null_resource.restart_osd,
   ]
 }
