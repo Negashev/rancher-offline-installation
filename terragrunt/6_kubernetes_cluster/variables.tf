@@ -47,3 +47,18 @@ variable "kubectl_version" {
   type = string
   default = "1.19.7"
 }
+
+variable "ssh_password" {
+  type = string
+  default = "passw0rd"
+}
+
+variable "ssh_port" {
+  type = number
+  default = 22
+}
+
+variable "ssh_user" {
+  type = string
+  default = "user"
+}
