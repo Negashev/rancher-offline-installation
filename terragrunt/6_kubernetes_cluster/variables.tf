@@ -37,3 +37,13 @@ variable "wal_devices_size" {
   type = string
   default = ""
 }
+
+variable "dir_for_kubeconfig" {
+  type = string
+  default = "/var/terragrunt"
+}
+
+variable "kubectl_version" {
+  type = string
+  default = "1.19.7"
+}
