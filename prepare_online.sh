@@ -39,6 +39,7 @@ else
       echo rancher/rke-tools:$RKE_TOOLS_VERSION >> /tmp/rancher/offline-images.txt
       echo rancher/hyperkube:$HUPERKUBE_VERSION >> /tmp/rancher/offline-images.txt
       echo ceph/ceph:$CEPH_VERSION >> /tmp/rancher/offline-images.txt
+      echo bitnami/kubectl:$KUBECTL_VERSION >> /tmp/rancher/offline-images.txt
       echo $POSTGRES_IMAGE >> /tmp/rancher/offline-images.txt
       echo "add helm chartmuseum"
       echo chartmuseum/chartmuseum:$CHARTMUSEAM_VERSION >> /tmp/rancher/offline-images.txt
