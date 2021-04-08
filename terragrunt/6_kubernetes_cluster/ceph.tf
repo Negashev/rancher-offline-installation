@@ -1,26 +1,3 @@
-resource "kubernetes_manifest" "config-map-ceph" {
-  provider = kubernetes-alpha
-  manifest = {
-    "apiVersion" = "v1"
-    "data" = {
-      "config" = <<-EOT
-        [global]
-        public network = ${var.public_network}
-        cluster network = ${var.cluster_network}
-        public addr = ""
-        cluster addr = ""
-        EOT
-    }
-    "kind" = "ConfigMap"
-    "metadata" = {
-      "name" = "rook-config-override"
-      "namespace" = "rook-ceph"
-    }
-  }
-}
-
-
-
 resource "kubernetes_manifest" "rook-ceph" {
   provider = kubernetes-alpha
 
@@ -158,9 +135,6 @@ resource "kubernetes_manifest" "rook-ceph" {
       "status.ceph.health" = "HEALTH_OK"
     }
   }
-    depends_on = [
-        kubernetes_manifest.config-map-ceph
-    ]
 }
 resource "kubernetes_manifest" "object-storage" {
   provider = kubernetes-alpha
@@ -327,4 +301,74 @@ resource "kubernetes_manifest" "object-storage-user" {
       kubernetes_manifest.block-storage,
       kubernetes_manifest.object-storage,
   ]
+}
+
+resource "null_resource" "remove_rook_config_override" {    
+    provisioner "remote-exec" {
+        inline = [
+            "echo ${var.ssh_password} | sudo -S docker run -it --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete configmap rook-config-override",
+        ]
+
+        connection {
+            type     = "ssh"
+            agent    = false
+            host     = var.bastion_host
+            password = var.ssh_password
+            user     = var.ssh_user
+            port     = var.ssh_port
+            timeout  = "30s"
+        }
+    }
+    depends_on = [
+      kubernetes_manifest.rook-ceph,
+      kubernetes_manifest.block-storage,
+      kubernetes_manifest.object-storage,
+      kubernetes_manifest.object-storage-user,
+    ]
+}
+
+resource "kubernetes_manifest" "config-map-ceph" {
+  provider = kubernetes-alpha
+  manifest = {
+    "apiVersion" = "v1"
+    "data" = {
+      "config" = <<-EOT
+        [global]
+        public network = ${var.public_network}
+        cluster network = ${var.cluster_network}
+        public addr = ""
+        cluster addr = ""
+        EOT
+    }
+    "kind" = "ConfigMap"
+    "metadata" = {
+      "name" = "rook-config-override"
+      "namespace" = "rook-ceph"
+    }
+  }
+    depends_on = [
+        null_resource.remove_rook_config_override
+    ]
+}
+
+
+resource "null_resource" "restart_osd" {    
+    provisioner "remote-exec" {
+        inline = [
+            "echo ${var.ssh_password} | sudo -S docker run -it --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete pod --selector=app=rook-ceph-osd",
+        ]
+
+        connection {
+            type     = "ssh"
+            agent    = false
+            host     = var.bastion_host
+            password = var.ssh_password
+            user     = var.ssh_user
+            port     = var.ssh_port
+            timeout  = "30s"
+        }
+    }
+    depends_on = [
+      kubernetes_manifest.config-map-ceph,
+    ]
 }
