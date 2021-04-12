@@ -25,7 +25,13 @@ variable "rancher_hostname" {
   type = string
   default = "my.company.com"
 }
+
 variable "rancher_password" {
   type = string
   default = "passw0rd"
+}
+
+variable "rancher_metadata_branch" {
+  type = string
+  default = "offline-instalation-no-autoupdate"
 }
