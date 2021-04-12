@@ -352,7 +352,7 @@ resource "kubernetes_manifest" "config-map-ceph" {
 }
 
 
-resource "null_resource" "restart_osd" {    
+resource "null_resource" "tune_cluster" {    
     provisioner "remote-exec" {
         inline = [
             "echo ${var.ssh_password} | sudo -S docker run --rm -v ${var.dir_for_kubeconfig}/kubeconfig:/.kube/config ${var.bastion_host}:5000/bitnami/kubectl:${var.kubectl_version} -n rook-ceph delete pod --selector=app=rook-ceph-osd",
