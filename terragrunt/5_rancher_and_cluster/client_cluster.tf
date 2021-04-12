@@ -16,6 +16,9 @@ resource "rancher2_cluster" "cluster" {
         "app": "application"
       }
     }
+    ingress {
+      provider = "none"
+    }
     kubernetes_version = var.kubernetes_version
     services {
       kubelet {
