@@ -57,7 +57,7 @@ resource "null_resource" "install_docker_worker" {
         inline = [
             "echo ${var.ssh_password} | sudo -S usermod -aG root ${var.ssh_user}",
             "echo ${var.ssh_password} | sudo -S curl ${var.bastion_host}/install_docker.sh | sudo -S BASTION_HOST=${var.bastion_host} DOCKER_VERSION=${var.docker_version} bash - ",
-            "echo ${var.ssh_password} | ${rancher2_cluster.cluster.cluster_registration_token.0.node_command} --worker",
+            "echo ${var.ssh_password} | ${rancher2_cluster.cluster.cluster_registration_token.0.node_command} --worker --label app=application",
             "while ! nc -z localhost 10250 ; do sleep 1 ; done"
         ]
 
