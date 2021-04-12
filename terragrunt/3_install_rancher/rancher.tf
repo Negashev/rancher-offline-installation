@@ -39,5 +39,14 @@ resource "helm_release" "rancher" {
     name  = "rancherImageTag"
     value = var.rancher_image_tag
   }
- 
+
+  set {
+    name  = "extraEnv[0].name"
+    value = "RANCHER_METADATA_BRANCH"
+  }
+
+  set {
+    name  = "extraEnv[0].value"
+    value = var.rancher_metadata_branch
+  }
 }
