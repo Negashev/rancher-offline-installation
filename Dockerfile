@@ -2,6 +2,7 @@ FROM docker
 ENV DOCKER_VERSION=19.03.15 \
     DOCKER_ARCH=x86_64 \
     RANCHER_VERSION=v2.5.6 \
+    RANCHER_METADATA_BRANCH=offline-instalation-no-autoupdate \
     HELM_VERSION=3.4.1 \
     KUBECTL_VERSION=1.19.7 \
     CERT_MANAGER_VERSION=v1.0.4 \
