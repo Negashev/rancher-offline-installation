@@ -12,8 +12,8 @@ resource "rancher2_cluster" "cluster" {
       }
     }
     dns {
-      node_selector {
-        app = application
+      node_selector = {
+        "app": "application"
       }
     }
     kubernetes_version = var.kubernetes_version
