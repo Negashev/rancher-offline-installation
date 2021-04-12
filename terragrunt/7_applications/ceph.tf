@@ -210,10 +210,7 @@ resource "kubernetes_manifest" "object-storage" {
       }
       "preservePoolsOnDelete" = true
     }
-  }  
-    depends_on = [
-        kubernetes_manifest.rook-ceph,
-    ]
+  }
 }
 
 resource "kubernetes_manifest" "block-storage" {
@@ -238,9 +235,6 @@ resource "kubernetes_manifest" "block-storage" {
       "status.phase" = "Ready"
     }
   }
-    depends_on = [
-        kubernetes_manifest.rook-ceph,
-    ]
 }
 
 resource "kubernetes_manifest" "storage-class" {
@@ -297,7 +291,6 @@ resource "kubernetes_manifest" "object-storage-user" {
     }
   }
   depends_on = [
-      kubernetes_manifest.rook-ceph,
       kubernetes_manifest.block-storage,
       kubernetes_manifest.object-storage,
   ]
@@ -320,7 +313,6 @@ resource "null_resource" "remove_rook_config_override" {
         }
     }
     depends_on = [
-      kubernetes_manifest.rook-ceph,
       kubernetes_manifest.block-storage,
       kubernetes_manifest.object-storage,
       kubernetes_manifest.object-storage-user,
