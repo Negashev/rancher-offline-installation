@@ -8,7 +8,7 @@ resource "rancher2_app" "database" {
   name = "metallb"
   project_id = var.system_project_id
   template_name = "metallb"
-  template_version = var.postgres_operator_version
+  template_version = var.metallb_version
   target_namespace = rancher2_namespace.metallb.id
   wait = true
   answers = {
