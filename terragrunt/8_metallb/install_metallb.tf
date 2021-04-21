@@ -15,7 +15,7 @@ resource "rancher2_app" "database" {
     "global.imageRegistry" = "${var.bastion_host}:5000/docker.io"
     "configInline.address-pools[0].name" = "default"
     "configInline.address-pools[0].protocol"= "layer2"
-    "configInline.address-pools[0].addresses[0]"= var.system_project_id
+    "configInline.address-pools[0].addresses[0]"= var.metallb_addresses
   }
   depends_on = [
     rancher2_namespace.metallb
