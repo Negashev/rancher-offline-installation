@@ -3,7 +3,7 @@ resource "rancher2_namespace" "metallb" {
   project_id = var.system_project_id
 }
 
-resource "rancher2_app" "database" {
+resource "rancher2_app" "metallb" {
   catalog_name = "bastion"
   name = "metallb"
   project_id = var.system_project_id
