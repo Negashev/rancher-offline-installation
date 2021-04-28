@@ -12,6 +12,11 @@ variable "metallb_version" {
   default = "2.3.5"
 }
 
+variable "ingress_version" {
+  type = string
+  default = "3.29.0"
+}
+
 variable "metallb_addresses" {
   type = string
   default = "0.0.0.10-0.0.0.50"
