@@ -24,5 +24,7 @@ docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm
 
 echo "save images"
 for i in `ls /tmp/helm`; do docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template ./$i | grep -oP '(?<=image: ).*(?=)' | tr -d '"' >> /tmp/rancher/offline-images.txt; done
+# fix for controller.image.digest in ingress-nginx
+for i in `ls /tmp/helm`; do docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION template --set controller.image.digest='' ./$i | grep -oP '(?<=image: ).*(?=)' | tr -d '"' >> /tmp/rancher/offline-images.txt; done
 echo 'save csi images for rook'
 tar -axf /tmp/helm/rook-ceph-*.tgz rook-ceph/values.yaml -O | grep -oP '(?<=image: ).*(?=)' | tr -d '"' >> /tmp/rancher/offline-images.txt
