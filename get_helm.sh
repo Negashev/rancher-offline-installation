@@ -9,6 +9,7 @@ docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add rook-release https://charts.rook.io/release
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add nvidia https://nvidia.github.io/k8s-device-plugin
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add bitnami https://charts.bitnami.com/bitnami
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo add postgres-operator "https://raw.githubusercontent.com/zalando/postgres-operator/$POSTGRES_OPERATOR_VERSION/charts/postgres-operator/"
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION repo update
 
@@ -18,6 +19,7 @@ docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch rook-release/rook-ceph --version $ROOK_VERSION
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch nvidia/nvidia-device-plugin --version $NVIDIA_VERSION
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch bitnami/metallb --version $METALLLB_VERSION
+docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch ingress-nginx/ingress-nginx --version $INGRESS_VERSION
 docker run --rm -it --name helm -v $HOST_MOUNT/helm:/root/ -w /root/ alpine/helm:$HELM_VERSION fetch postgres-operator/postgres-operator --version $POSTGRES_OPERATOR_VERSION
 
 echo "save images"
