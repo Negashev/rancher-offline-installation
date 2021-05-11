@@ -2,9 +2,10 @@ You need
 - vm with internet and bastion access
 - docker on this vm
 - 60Gb+ on vm and bastion
-```
-sudo docker build -t online https://github.com/Negashev/rancher-offline-installation.git#main && sudo docker run -it --rm -v /var/run:/var/run -v /tmp:/tmp --privileged online -b -o -p -i
-```
+
+![rancher-offline-installation](rancher-offline-installation.jpg)
+
+
 ```
 Usage:
     -o creating data on local with internet
@@ -17,6 +18,7 @@ Usage:
 ### Docs
 ---
 
+#### Preapare ADMIN
 - install docker on VM with internet (next ADMIN vm)
 ```
 curl https://releases.rancher.com/install-docker/19.03.sh | sh
@@ -36,12 +38,16 @@ sudo docker run -it --rm \
 --privileged \
 online -b -o -p -i
 ```
+---
+#### Check the bastion
 - on bastion `docker ps` show 3 containers
 ```
 registry
 bastion-static
 chartmuseum
 ```
+---
+#### Start offline installation (from bastion)
 - on bastion, cp terragrunt data
 ```
 # store all terragrunt data on bastion
