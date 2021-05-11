@@ -32,7 +32,7 @@ BASTION_SCP     # scp command with '{source} {user}@{host}:{destination}' to SCP
 BASTION_SSH_RUN # exec command with '{user}@{host}' from admin to bastion
 ```
 ```
-sudo docker build -t online https://github.com/Negashev/rancher-offline-installation.git#main && \
+sudo docker build -t online git@github.com:amttel/rancher-offline.git#main && \
 sudo docker run -it --rm \
 -v /var/run:/var/run \
 -v /var/online_bastion:/tmp \
@@ -61,6 +61,22 @@ sudo docker run -it --rm -v /var/terragrunt:/mount -w /terragrunt terragrunt cp 
 ```
 - on bastion, provision all nodes offline
 ```
+TF_VAR_bastion_host      # bastion host for all nodes to install docker, rancher agent, and use for insecure docker registry
+TF_VAR_ssh_password      # ssh password from bastion user on all nodes
+TF_VAR_ssh_user          # ssh user from bastion on all nodes
+TF_VAR_rancher_nodes     # array of ip's for rancher (Kubernetes by rke)
+TF_VAR_rancher_hostname  # rancher domain for cluster's
+TF_VAR_rancher_password  # rancher admin password
+TF_VAR_cluster_nodes     # dict(array) keys of brain, storage and worker nodes of user cluster
+TF_VAR_public_network    # frontend range for ceph
+TF_VAR_cluster_network   # backend range for ceph
+TF_VAR_data_devices_size # ceph data
+TF_VAR_wal_devices_size  # ceph wal, can be null
+TF_VAR_db_devices_size   # ceph db, can be null
+TF_VAR_network_plugin    # cluster rke network plugin
+TF_VAR_metallb_addresses # metallb ip range 
+```
+```
 sudo docker run -it --rm -v /var/terragrunt:/mount -w /mount terragrunt \
 -e TF_VAR_bastion_host=10.10.10.10 \
 -e TF_VAR_ssh_password=passw0rd \
@@ -69,4 +85,11 @@ sudo docker run -it --rm -v /var/terragrunt:/mount -w /mount terragrunt \
 -e TF_VAR_rancher_hostname=my.company.com \
 -e TF_VAR_rancher_password=Rancher-passw0rd \
 -e TF_VAR_cluster_nodes='{"brain":["0.0.0.4","0.0.0.5","0.0.0.6"],"storage":["0.0.0.7","0.0.0.8","0.0.0.9"],"worker":["0.0.0.10","0.0.0.11","0.0.0.12"]}' \
+-e TF_VAR_public_network='0.0.0.0/23' \
+-e TF_VAR_cluster_network='0.0.1.0/23' \
+-e TF_VAR_data_devices_size='1TB:' \
+-e TF_VAR_wal_devices_size='10G:15G' \
+-e TF_VAR_db_devices_size='200G:300G' \
+-e TF_VAR_network_plugin=canal \
+-e TF_VAR_metallb_addresses='10.0.0.100-10.0.0.110' \
 terragrunt run-all apply
