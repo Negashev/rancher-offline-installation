@@ -23,8 +23,14 @@ Usage:
 ```
 curl https://releases.rancher.com/install-docker/19.03.sh | sh
 ```
-- on ADMIN should be with access to offline bastion 
-
+- on ADMIN should be with access to offline bastion
+```
+HOST_MOUNT      # dir on admin for store everything 60G+
+BASTION_HOST    # bastion ip (admin got access to bastion)
+BASTION_USER    # bastion user to scp install docker
+BASTION_SCP     # scp command with '{source} {user}@{host}:{destination}' to SCP data from admin to bastion
+BASTION_SSH_RUN # exec command with '{user}@{host}' from admin to bastion
+```
 ```
 sudo docker build -t online https://github.com/Negashev/rancher-offline-installation.git#main && \
 sudo docker run -it --rm \
@@ -34,7 +40,7 @@ sudo docker run -it --rm \
 -e BASTION_HOST=10.0.10.10 \
 -e BASTION_USER=username \
 -e BASTION_SCP='sshpass -p "passw0rd" scp -oStrictHostKeyChecking=no -r {source} {user}@{host}:{destination}' \
--e BASTION_SSH_RUN='echo "passw0rd" | sshpass -p "passw0rd" ssh -oStrictHostKeyChecking=no  -oPasswordAuthentication=yes  {user}@{host}' \
+-e BASTION_SSH_RUN='echo "passw0rd" | sshpass -p "passw0rd" ssh -oStrictHostKeyChecking=no  -oPasswordAuthentication=yes {user}@{host}' \
 --privileged \
 online -b -o -p -i
 ```
